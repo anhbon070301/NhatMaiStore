@@ -30,7 +30,7 @@
                                 @csrf
                                 <fieldset>
 
-                                    <div class="control-group">
+                                    <div class="control-group col-md-6">
                                         <label class="control-label">Category's name<span style="color: red;"> *</span></label>
                                         <div class="controls">
                                             @if ($errors->any())
@@ -44,13 +44,13 @@
                                          </div> <!-- /controls -->
                                     </div> <!-- /control-group -->
 
-                                    <div class="control-group">
+                                    <div class="control-group col-md-6">
                                         <label class="control-label">Sort order <span style="color: red;">*</span></label>
                                         <div class="controls">
                                             @if ($errors->any())
-                                                <input class="form-control" name="sort_order" value="{!! old('sort_order') !!}" type="text" />
+                                                <input class="form-control" name="sort_order" value="{!! old('sort_order') !!}" type="number" />
                                             @else 
-                                                <input type="text" class="form-control" name="sort_order" value="{{ $category->sort_order }}">
+                                                <input type="number" class="form-control" name="sort_order" value="{{ $category->sort_order }}">
                                             @endif 
                                             @error ('sort_order')
                                                 <label class="error">{{ $message }}</label>
@@ -58,7 +58,7 @@
                                         </div> <!-- /controls -->
                                     </div> <!-- /control-group -->
 
-                                    <div class="control-group">
+                                    <div class="control-group col-md-6">
                                         <label class="control-label">Active</label>
                                         <div class="controls">
                                             <select class="form-select" name="active">

@@ -43,7 +43,7 @@
                                     <div class="control-group col-md-6">
                                         <label class="control-label">Sort order<span style="color: red;"> *</span></label>
                                         <div class="controls">
-                                            <input type="text" class="form-control" name="sort_order" id="sortOrder" value="{!! old('sort_order') !!}">
+                                            <input type="number" class="form-control" name="sort_order" id="sortOrder" value="{!! old('sort_order') !!}">
                                             @error ('sort_order')
                                             <label class="error">{{ $message }}</label>
                                             @enderror

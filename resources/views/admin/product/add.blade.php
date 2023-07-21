@@ -154,7 +154,7 @@
                                         <label class="control-label">Sort order <span
                                                 style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" class="span3" name="sort_order"
+                                            <input type="number" class="span3" name="sort_order"
                                                 value="{!! old('sort_order') !!}">
                                             @error ('sort_order')
                                             <br>

@@ -199,9 +199,9 @@
                                         <div class="controls">
                                             @if ($errors->any())
                                             <input class="span3" name="sort_order" value="{!! old('sort_order') !!}"
-                                                type="text" />
+                                                type="number" />
                                             @else
-                                            <input type="text" class="span3" name="sort_order"
+                                            <input type="number" class="span3" name="sort_order"
                                                 value="{{ $product->sort_order }}">
                                             @endif
                                             @error ('sort_order')

@@ -115,7 +115,7 @@
                                         <div class="control-group" style="width: 50%; display: flex; align-items: center;">
                                             <label class="control-label" style="width: 15%;">Sort order</label> &emsp;
                                             <div class="controls">
-                                                <input type="text" name="sort_order" value="{!! old('sort_order') !!}">
+                                                <input type="number" name="sort_order" value="{!! old('sort_order') !!}">
                                                 @error ('sort_order')
                                                 <br>
                                                 <label class="error">{{ $message }}</label>
