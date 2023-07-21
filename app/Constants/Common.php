@@ -26,7 +26,7 @@ class Common
 
     const DELETE = 2;
 
-    const PAGINATE_BE = 2;
+    const PAGINATE_BE = 10;
 
     const PAGINATE_FE = 12;
 

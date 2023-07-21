@@ -88,17 +88,6 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|unique:brands',
-            'email' => 'required|email|string',
-            'phone' => 'required|numeric'
-        ], [
-            'name.required' => 'Staff name has not been entered',
-            'email.required' => 'Email has not been entered',
-            'phone.numeric' => 'Phone is not number',
-            'phone.required' => 'Phone has not been entered'
-        ]);
-
         // Brand
         $staff = $this->userServiceInterface->update($request->all(), $id);
 

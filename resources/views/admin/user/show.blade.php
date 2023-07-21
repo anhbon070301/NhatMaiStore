@@ -13,8 +13,8 @@
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item"><a href="{{route('indexUser')}}">Account</a></li>
+                    <li class="breadcrumb-item active">List</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -26,12 +26,37 @@
                 <div class="col-lg-12">
                     <div class="row">
 
-                        <div class="card-body">
-                            <a href="{{ route('createUser') }}" class="btn btn-primary"><i class="ri-add-fill"></i> </a>
+                        <div id="message">
+                            @if (session()->has('messageAdd'))
+                            <div class="alert alert-success">
+                                {{ session('messageAdd') }}
+                            </div>
+                            @endif
 
+                            @if (session()->has('messageUpdate'))
+                            <div class="alert alert-success">
+                                {{ session('messageUpdate') }}
+                            </div>
+                            @endif
+
+                            @if (session()->has('messageDelete'))
+                            <div class="alert alert-success">
+                                {{ session('messageDelete') }}
+                            </div>
+                            @endif
+
+                            @if (session()->has('messageError'))
+                            <div class="alert alert-danger">
+                                {{ session('messageError') }}
+                            </div>
+                            @endif
+                        </div>
+
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <div class="widget-content">
-                                    <table style="width:100%" class="table table-striped table-bordered">
+                                    <a href="{{route('createUser')}}" class="btn btn-primary"> <i class="ri-add-fill"></i> </a>
+                                    <table style="width:100%" class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th style="width:45%">User's Name</th>
@@ -48,9 +73,9 @@
                                                 <td>{{ $userData->email }}</td>
                                                 <td style="text-align: center;">{{ $userData->phone }}</td>
                                                 <td style="text-align: center;">
-                                                    <a class="btn btn-success" href="{{ route('editUser', $userData->id)  }}"><i class="icon-edit"></i></a>
+                                                    <a class="btn btn-success" href="{{ route('editUser', $userData->id)  }}"><i class="bi bi-pencil-square"></i></a>
                                                     @if (Auth::guard("admin")->user()->permission == 0)
-                                                    <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this staff ?');" href="{{ route('destroyUser', $userData->id) }}"> <i class="icon-trash"></i></a>
+                                                    <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this staff ?');" href="{{ route('destroyUser', $userData->id) }}"><i class="bi bi-trash"></i></a>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -58,7 +83,6 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>

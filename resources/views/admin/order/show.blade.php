@@ -5,16 +5,14 @@
 <body>
     @include ('admin.common.index')
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" /> -->
-
     <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item"><a href="{{ route('indexOrder') }}">Order</a></li>
+                    <li class="breadcrumb-item active">List</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -30,49 +28,48 @@
                             <div class="table-responsive">
 
                                 <div class="card-header">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><i class="icon-shopping-cart"></i> ORDERS
-                                        </li>
-                                        <li>
-                                            &emsp14;
-                                            <div>
-                                                <form action="{{route('exportOrder')}}" method="get">
-                                                    <input type="hidden" name="name">
-                                                    <input type="hidden" name="phone">
-                                                    <input type="hidden" name="email">
-                                                    <input type="hidden" name="status">
-                                                    <button type="submit" class="btn btn-primary">Export</button>
-                                                </form>
-                                            </div>
-                                        </li>
-                                    </ol>
-                                </div>
 
-                                <div class="widget-content">
-
-                                    <form action=" {{ route('indexOrder') }} " method="get">
+                                    <form action="{{ route('indexOrder') }}" method="get">
                                         <div class="search"> &emsp;
 
-                                            <div class="search-element">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="control-group col-md-4">
+                                                        <label class="control-label">Customer's name</label>
+                                                        <div class="controls">
+                                                            <input id='searchInput' class="form-control" name="inputName" type='text' placeholder="Customer's name" />
+                                                        </div>
+                                                    </div>
 
-                                                <div class="control-group detail" style="width: 30%;">
-                                                    <label class="form-control detail-left">Customer's name</label>
-                                                    <input id='searchInput' style="width: 57%;" class="form-control" name="inputName" type='text' placeholder="Customer's name" />
+                                                    <div class="control-group col-md-4">
+                                                        <label class="control-label">Phone</label>
+                                                        <div class="controls">
+                                                            <input class="form-control" name="inputPhone" type='text' placeholder='Phone' />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="control-group col-md-4">
+                                                        <label class="control-label">Email</label>
+                                                        <div class="controls">
+                                                            <input class="form-control" name="inputEmail" type='text' placeholder='Email' />
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                <div class="control-group detail" style="width: 25%;">
-                                                    <label class="form-control detail-left">Phone</label>
-                                                    <input style="width: 57%;" class="form-control" name="inputPhone" type='text' placeholder='Phone' />
-                                                </div>
-
-                                                <div class="control-group detail" style="width: 25%;">
-                                                    <label class="form-control detail-left">Email</label>
-                                                    <input style="width: 57%;" class="form-control" name="inputEmail" type='text' placeholder='Email' />
-                                                </div>
-
-                                                <div class="control-group" style="width: 10%; height: 90%;">
-                                                    <button class="btn btn-secondary" name="btnSearch" value="btnSearch" style="color: black ;border-radius: 20px; height: 90%;"><i class="icon-search"></i></button> &emsp;
-                                                    <a href="{{ route('indexOrder') }}" class="btn btn-secondary" style="color: black ;border-radius: 20px; height: 70%;"><i class="icon-retweet"></i></a>
+                                                <div class="row">
+                                                    <div class="control-group col-md-6">
+                                                        <button class="btn btn-secondary" name="btnSearch" value="btnSearch"><i class="ri-search-2-line"></i></button> &emsp;
+                                                        <a href="{{ route('indexOrder') }}" class="btn btn-secondary"><i class="ri-arrow-go-back-line"></i></a>
+                                                    </div>
+                                                    <div class="control-group col-md-6">
+                                                        <form action="{{route('exportOrder')}}" method="get">
+                                                            <input type="hidden" name="name">
+                                                            <input type="hidden" name="phone">
+                                                            <input type="hidden" name="email">
+                                                            <input type="hidden" name="status">
+                                                            <button type="submit" class="btn btn-primary"><i class="ri-file-excel-2-line"></i></button>
+                                                        </form>
+                                                    </div>
                                                 </div>
 
                                             </div>
@@ -80,7 +77,10 @@
                                         </div>
                                     </form>
 
-                                    <table style="width:100%" class="table table-striped table-bordered">
+                                </div>
+
+                                <div class="widget-content">
+                                    <table style="width:100%; margin-top: 20px;" class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th style="width:5%; text-align: center;">No</th>

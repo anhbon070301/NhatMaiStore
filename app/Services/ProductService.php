@@ -41,14 +41,14 @@ class ProductService implements ProductServiceInterface
      */
     public function create(array $attributes)
     {
-        // if (isset($attributes['image_url'])) {
-        //     $image = $attributes['image_url'];
+        if (isset($attributes['image_url'])) {
+            $image = $attributes['image_url'];
 
-        //     $attributes['image_url'] = handleImage($image);
-        // } else {
-        //     $attributes['image_url'] = "no-image.png";
-        // }
-        $attributes['image_url'] = "test.png";
+            $attributes['image_url'] = handleImage($image);
+        } else {
+            $attributes['image_url'] = "no-image.png";
+        }
+        
         return $this->productReponsitory->create($attributes);
     }
 

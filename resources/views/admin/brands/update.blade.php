@@ -23,7 +23,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Add brand form</h5>
+                            <h5 class="card-title">Edit brand form</h5>
 
                             <!-- General Form Elements -->
                             <form action="{{ route('updateBrand', $brand->id) }}" enctype="multipart/form-data" method="post" id="edit-profile" class="form-horizontal">

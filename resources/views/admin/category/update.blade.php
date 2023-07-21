@@ -11,8 +11,8 @@
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('showBrand')}}">Brand</a></li>
-                    <li class="breadcrumb-item active">Add</li>
+                    <li class="breadcrumb-item"><a href="{{route('showCate')}}">Category</a></li>
+                    <li class="breadcrumb-item active">Update</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -23,7 +23,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Add brand form</h5>
+                            <h5 class="card-title">Edit category form</h5>
 
                             <!-- General Form Elements -->
                             <form action="{{ route('updateCate', $category->id) }}" method="post" id="edit-profile" class="form-horizontal">
