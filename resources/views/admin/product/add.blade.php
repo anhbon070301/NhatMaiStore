@@ -80,7 +80,6 @@
                                         </div> <!-- /control-group -->
                                     </div>
 
-
                                     <div class="control-group">
                                         <label class="control-label">Product name <span style="color: red;">*</span></label>
                                         <div class="controls">
@@ -151,7 +150,7 @@
                                         <div class="control-group col-md-4">
                                             <label class="control-label">Sort order <span style="color: red;">*</span></label>
                                             <div class="controls">
-                                                <input type="number" class="form-control" name="sort_order" value="{!! old('sort_order') !!}">
+                                                <input type="number" class="form-control" name="sort_order" value="{!! old('sort_order', 0) !!}">
                                                 @error ('sort_order')
                                                 <label class="error">{{ $message }}</label>
                                                 @enderror

@@ -15,4 +15,8 @@ interface OrderServiceInterface
     public function detail(int $id);
 
     public function updateActive(array $attribute);
+
+    public function count();
+
+    public function listItem();
 }

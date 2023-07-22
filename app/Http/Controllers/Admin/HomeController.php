@@ -36,15 +36,11 @@ class HomeController extends Controller
     {
         $categories = $this->categoryServiceInterface->getAll();
         $brands = $this->brandServiceInterface->getAll();
-        $order = Order_item::groupBy('product_name')
-                                ->groupBy('product_id')
-                                ->groupBy('product_image')
-                                ->select('product_name', 'product_id','product_image', Order_item::raw('sum(product_quantity) as total'))
-                                ->orderBy('total', 'desc')
-                                ->paginate(Common::PAGINATE_HOME);
+        $order = $this->orderServiceInterface->listItem();
         $orderData = $this->orderServiceInterface->list([]);
         $comment = $this->reportServiceInterface->list([]);
-        
-        return view('admin/home', compact('categories', 'brands', 'order', 'orderData', 'comment'));
+        $array = $this->orderServiceInterface->count();
+
+        return view('admin/home', compact('categories', 'brands', 'order', 'orderData', 'comment', 'array'));
     }
 }

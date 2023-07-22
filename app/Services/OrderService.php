@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Constants\Common;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Services\Contracts\OrderServiceInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class OrderService implements OrderServiceInterface
 {
@@ -77,5 +80,28 @@ class OrderService implements OrderServiceInterface
         ];
 
         return $this->orderRepository->updateActive($attribute['id'], $value);
+    }
+
+    public function count() 
+    {
+        $month = Carbon::now()->month;
+        $result = DB::table("orders")
+                ->whereMonth('created_at', '=', 6)
+                ->selectRaw('SUM(total_products) as total_products, SUM(total_money) as total_money')
+                ->get();
+        return $result->first();
+    }
+
+    public function listItem()
+    {
+        $result = DB::table('order_items')
+                        ->groupBy('product_name')
+                        ->groupBy('product_id')
+                        ->groupBy('product_image')
+                        ->select('product_name', 'product_id', 'product_image', DB::raw('SUM(product_quantity) as total'))
+                        ->orderBy('total', 'desc')
+                        ->paginate(Common::PAGINATE_HOME);
+
+        return $result;
     }
 }

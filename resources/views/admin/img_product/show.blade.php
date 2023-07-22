@@ -5,178 +5,132 @@
 <body>
     @include ('admin.common.index')
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" /> -->
-
     <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item"><a href="{{route('indexProduct')}}">Product</a></li>
+                    <li class="breadcrumb-item active">Image</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
 
-        <section class="section dashboard">
-            <div class="row">
 
-                <!-- Left side columns -->
-                <div class="col-lg-12">
-                    <div class="row">
+        <section class="section">
+            <div class="row align-items-top">
 
-                        <div class="widget-content">
-
-                            <div class="detail">
-
-                                <div class="col-sm-6 detail-child" style="width: 63%;">
-
-                                    <div class="product-inner">
-                                        <h2 class="product-name">{{ $product->name }}</h2>
-                                        <div style="display: flex;"><b>Category:</b> &ensp; <p>{{ $product->category->name }}</p>
-                                        </div>
-                                        <div style="display: flex;"><b>Brand:</b> &ensp; <p>{{ $product->brand->name }}</p>
-                                        </div>
-                                        <div style="display: flex;"><b>Tags:</b> &ensp; <p>{{ $product->tags }}</p>
-                                        </div>
-                                        <div style="display: flex;"><b>Price:</b> &ensp; $<p>{{ number_format($product->price) }}</p>
-                                        </div>
-                                        <div role="tabpanel">
-                                            <div class="tab-content">
-                                                <div role="tabpanel" class="tab-pane fade in active">
-                                                    <h2>Product Description</h2>
-                                                    <p>{{ $product->description }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                <div class="card">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <img src="{{ asset('images/' . $product->image_url) }}" style="width: 150px;" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $product->name }}</h5>
+                                    <div><b>Category: </b>{{ $product->category->name }}</div>
+                                    <div><b>Brand: </b>{{ $product->brand->name }}</div>
+                                    <p class="card-text">{!! $product->description !!}</p>
                                 </div>
-
-                                <div class="detail-child" style="width: 33%; margin-right: 1%;">
-                                    <div class="col-sm-4">
-                                        <div class="product-images">
-
-                                            <div class="product-main-img">
-                                                <img src="../images/{{ $product->image }}" width="400px" height="600px" alt="k tải được">
-                                            </div> &emsp;
-
-                                            <div>
-                                                <a href="{{ route('editProducts', $product->id) }}" class="btn btn-success"><i class="icon-edit"></i></a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-                            <!-- hết  -->
-                        </div>
 
-                        &emsp;
+                            <div class="col-lg-6">
 
-                        <div>
-                            @if (session()->has('messageAdd'))
-                            <div class="alert alert-success">
-                                {{ session('messageAdd') }}
-                            </div>
-                            @endif
-
-                            @if (session()->has('messageUpdate'))
-                            <div class="alert alert-success">
-                                {{ session('messageUpdate') }}
-                            </div>
-                            @endif
-
-                            @if (session()->has('messageDelete'))
-                            <div class="alert alert-success">
-                                {{ session('messageDelete') }}
-                            </div>
-                            @endif
-                        </div>
-
-                        <div class="widget-content">
-                            <div class="col-sm-4" style="margin-left: 2%;">
-                                <h2>Add Image</h2> &ensp;
+                                <h2>Add Image</h2>
                                 <form action="{{ route('storeImage') }}" method="post" enctype="multipart/form-data">
                                     @csrf
-                                    <div style="display: flex; flex-direction: column;">
-                                        <input type="hidden" value="{{ $product->id }}" name="product_id">
-                                        <div class="control-group" style="width: 50%; display: flex; align-items: center;">
-                                            <label class="control-label" style="width: 15%;">Image</label> &emsp;
-                                            <input type="file" name="image_url[]" style="width: 50%;" multiple> <br>
 
+                                    <input type="hidden" value="{{ $product->id }}" name="product_id">
+                                    <div class="control-group col-md-6">
+                                        <label class="control-label">Image</label>
+                                        <div class="controls">
+                                            <input type="file" class="form-control" name="image_url[]" multiple> <br>
                                             @error ('image_url')
                                             <label class="error">{{ $message }}</label>
                                             @enderror
                                         </div>
-
-                                        <div class="control-group" style="width: 50%; display: flex; align-items: center;">
-                                            <label class="control-label" style="width: 15%;">Sort order</label> &emsp;
-                                            <div class="controls">
-                                                <input type="number" name="sort_order" value="{!! old('sort_order') !!}">
-                                                @error ('sort_order')
-                                                <br>
-                                                <label class="error">{{ $message }}</label>
-                                                @enderror
-                                            </div> <!-- /controls -->
-                                        </div> <!-- /control-group -->
-                                        <button type="submit" class="btn btn-primary" style="width: 8%; margin-left: 8.8%;">Up Load</button>
                                     </div>
-                                    &emsp;
 
-                                    @if ($errors -> any())
-                                    <div class="alert alert-primary text-center">
-                                        @foreach ($errors->all() as $errors)
-                                        <p>{{ $errors }}</p>
-                                        @endforeach
-                                    </div>
-                                    @endif
+                                    <div class="control-group col-md-6">
+                                        <label class="control-label">Sort order</label>
+                                        <div class="controls">
+                                            <input type="number" class="form-control" name="sort_order" value="{!! old('sort_order', 0) !!}">
+                                            @error ('sort_order')
+                                            <label class="error">{{ $message }}</label>
+                                            @enderror
+                                        </div> <!-- /controls -->
+                                    </div> <!-- /control-group -->
+
+                                    <div class="control-group col-md-6">
+                                        <button type="submit" class="btn btn-primary">Up Load</button>
+                                    </div> <!-- /control-group -->
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <div class="col-md-12">
-                                <div class="container-fluid">
-                                    <div class="card mb-4">
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <div class="widget-content">
-                                                    <table style="width:100%" class="table table-striped table-bordered">
+            </div>
+        </section>
 
-                                                        <thead>
-                                                            <tr>
-                                                                <th style="width:5%; text-align: center;">No</th>
-                                                                <th style="width:15%; text-align: center;">Image</th>
-                                                                <th style="width:52%;"></th>
-                                                                <th style="width:8%; text-align: center;">Sort order</th>
-                                                                <th style="width:10%; text-align: center;">Action</th>
-                                                            </tr>
-                                                        </thead>
+        <section class="section dashboard">
+            <div class="row">
+                <div class="col-lg-12">
 
-                                                        <tbody>
-                                                            @foreach ($images as $key => $imageList)
-                                                            <tr>
-                                                                <td style="text-align: center;">{{ $key + 1 }}</td>
-                                                                <td style="text-align: center;"><img src="../images/{{ $imageList->image_url }}" height="50px" width="150px" alt="Khong tai duoc"></td>
-                                                                <td></td>
-                                                                <td style="text-align: center;">{{ $imageList->sort_order }}</td>
-                                                                <td style="text-align: center;">
-                                                                    <form method="post" action="">
-                                                                        <input value="{{ $imageList->id }}" type="hidden" name="id" id="imageId">
-                                                                        <a class="btn btn-danger" href="/phone/public/destroyImage/{{ $imageList->id }}/{{ $product->id }}" onclick="return confirm('Are you sure you want to delete this item?');"> <i class="icon-trash"></i></a>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
+                    <div id="message">
+                        @if (session()->has('messageAdd'))
+                        <div class="alert alert-success">
+                            {{ session('messageAdd') }}
+                        </div>
+                        @endif
 
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        @if (session()->has('messageUpdate'))
+                        <div class="alert alert-success">
+                            {{ session('messageUpdate') }}
+                        </div>
+                        @endif
+
+                        @if (session()->has('messageDelete'))
+                        <div class="alert alert-success">
+                            {{ session('messageDelete') }}
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="widget-content">
+                                <table style="width:100%" class="table table-striped">
+
+                                    <thead>
+                                        <tr>
+                                            <th style="width:5%; text-align: center;">No</th>
+                                            <th style="width:15%; text-align: center;">Image</th>
+                                            <th style="width:52%;"></th>
+                                            <th style="width:8%; text-align: center;">Sort order</th>
+                                            <th style="width:10%; text-align: center;">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($images as $key => $imageList)
+                                        <tr>
+                                            <td style="text-align: center;">{{ $key + 1 }}</td>
+                                            <td style="text-align: center;"><img src="{{ asset('images/' . $imageList->image_url) }}" width="150px" alt="Khong tai duoc"></td>
+                                            <td></td>
+                                            <td style="text-align: center;">{{ $imageList->sort_order }}</td>
+                                            <td style="text-align: center;">
+                                                <form method="post" action="">
+                                                    <input value="{{ $imageList->id }}" type="hidden" name="id" id="imageId">
+                                                    <a class="btn btn-danger" href="{{ route('destroyImage', [$imageList->id, $product->id]) }}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="bi bi-trash"></i></a>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+
                             </div>
                         </div>
 
