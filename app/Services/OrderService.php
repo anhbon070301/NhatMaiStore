@@ -86,7 +86,8 @@ class OrderService implements OrderServiceInterface
     {
         $month = Carbon::now()->month;
         $result = DB::table("orders")
-                ->whereMonth('created_at', '=', 6)
+                ->whereMonth('created_at', '=', 10)
+                ->whereYear('created_at', '=', 2022)
                 ->selectRaw('SUM(total_products) as total_products, SUM(total_money) as total_money')
                 ->get();
         return $result->first();
@@ -98,10 +99,15 @@ class OrderService implements OrderServiceInterface
                         ->groupBy('product_name')
                         ->groupBy('product_id')
                         ->groupBy('product_image')
-                        ->select('product_name', 'product_id', 'product_image', DB::raw('SUM(product_quantity) as total'))
+                        ->select('product_name', DB::raw('SUM(product_quantity) as total'))
                         ->orderBy('total', 'desc')
                         ->paginate(Common::PAGINATE_HOME);
 
         return $result;
+    }
+
+    public function getOrder()
+    {
+        return $this->orderRepository->getOrder();
     }
 }

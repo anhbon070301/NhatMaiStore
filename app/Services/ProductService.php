@@ -97,4 +97,9 @@ class ProductService implements ProductServiceInterface
 
         return $this->productReponsitory->updateActive($attribute['id'], $value);
     }
+
+    public function getProduct()
+    {
+        return $this->productReponsitory->getProduct();
+    }
 }

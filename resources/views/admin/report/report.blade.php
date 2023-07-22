@@ -13,8 +13,7 @@
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item">Report</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -23,96 +22,200 @@
             <div class="row">
 
                 <!-- Left side columns -->
-                <div class="col-lg-12">
+                <div class="col-lg-8">
                     <div class="row">
+                    
+                        <!-- Reports -->
+                        <div class="col-12">
+                            <div class="card">
 
-                <!-- /span6 -->
-                <div class="span6">
-                    <div class="widget-content">
-                        <h3>Review</h3>
-                        <!-- /widget-header -->
-                        <div class="widget-content">
-                            <ul class="messages_layout">
-                                @foreach ($comment as $commentList)
-                                <li class="from_user left">
-                                    <a href="#" class="avatar"><img  style="width: 30%;" src="/phone/public/images/anhdaidien.jfif"/></a>
-                                    <div class="message_wrap">
-                                        <div class="info"> <a class="name">{{ $commentList->user_name }}</a> <span class="time">about: </span> &nbsp <span> <a href="{{ route('showProduct', $commentList->product_id) }}" target="_blank"><b>{{ $commentList->product_name }}</b></a></span>
-                                            <div class="options_arrow">
-                                                <div class="dropdown pull-right"> <a class="dropdown-toggle " id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#"> <i class=" icon-caret-down"></i> </a>
-                                                    <ul class="dropdown-menu " role="menu" aria-labelledby="dLabel">
-                                                        <li><a href="#"><i class=" icon-share-alt icon-large"></i> Reply</a></li>
-                                                        <li><a href="#"><i class=" icon-trash icon-large"></i> Delete</a></li>
-                                                        <li><a href="#"><i class=" icon-share icon-large"></i> Share</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text">{{ $commentList->comments }} </div>
-                                    </div>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <!-- /widget-content -->
-                    </div>
-                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Inventory</h5>
 
-                <div class="span6">
-                    <div class="widget">
-                        <div class="widget-content">
-                            <h3>TOP ORDER</h3>
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 5%; text-align: center;">No</th>
-                                        <th style="width: 50%; text-align: center;">Customer</th>
-                                        <th style="width: 25%; text-align: center;">Total</th>
-                                        <th style="width: 20%; text-align: center;">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($orderData as $key => $orderListTop)
-                                    <tr>
-                                        <td style="text-align: center;">{{ $key+1 }}</td>
-                                        <td style="text-align: left;"><a href="{{ route('showbyId', $orderListTop->id) }}">{{ $orderListTop->customer_name }}</a></td>
-                                        <td style="text-align: right;">${{ number_format($orderListTop->total_money) }}</td>
-                                        <td style="text-align: center;">{{ $orderListTop->created_date }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                    <!-- Line Chart -->
+                                    <div id="reportsChart"></div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            // Lấy phần tử HTML chứa biểu đồ
+                                            var chartContainer = $("#reportsChart");
 
-                    <div class="widget-content">
-                        <h3>BEST SELL</h3>
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th style="width: 5%; text-align: center;">No</th>
-                                    <th style="width: 5%; text-align: center;">Product Name</th>
-                                    <th style="width: 5%; text-align: center;">Image</th>
-                                    <th style="width: 5%; text-align: center;">Total Order</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($order as $key => $orderList)
-                                <tr>
-                                    <td style="text-align: center;">{{ $key+1 }}</td>
-                                    <td style="text-align: center;"><a href="{{ route('showImage', $orderList->product_id) }}">{{ $orderList->product_name }}</a></td>
-                                    <td style="text-align: center;"><img src="/phone/public/images/{{ $orderList->product_image }}" height="50px" width="200px" alt="Khong tai duoc"></td>
-                                    <td style="text-align: center;">{{ $orderList->total }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                            var data = JSON.parse('{!! $product !!}');
 
-                </div>
+                                            var dataSeries = data.map(function(item) {
+                                                return item.amount;
+                                            });
+
+                                            var dataLabels = data.map(function(item) {
+                                                return item.name;
+                                            });
+
+                                            // Tạo biểu đồ bằng ApexCharts
+                                            var chartOptions = {
+                                                chart: {
+                                                    type: "bar",
+                                                    height: 350
+                                                },
+                                                series: [{
+                                                    name: "Series 1",
+                                                    data: dataSeries
+                                                }],
+                                                xaxis: {
+                                                    categories: dataLabels
+                                                },
+                                                emphasis: {
+                                                    label: {
+                                                        show: true,
+                                                        fontSize: '18',
+                                                        fontWeight: 'bold'
+                                                    }
+                                                },
+                                            };
+
+                                            var chart = new ApexCharts(chartContainer[0], chartOptions);
+                                            chart.render();
+                                        });
+                                    </script>
+
+                                    <!-- End Line Chart -->
+
+                                </div>
+
+                            </div>
+                        </div><!-- End Reports -->
+
+                        <!-- Recent Sales -->
+                        <div class="col-12">
+                            <div class="card recent-sales overflow-auto">
+
+                                <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Filter</h6>
+                                        </li>
+
+                                        <li><a class="dropdown-item" href="#">Today</a></li>
+                                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div><!-- End Recent Sales -->
 
                     </div>
                 </div><!-- End Left side columns -->
+
+                <!-- Right side columns -->
+                <div class="col-lg-4">
+
+                    <!-- Website Traffic -->
+                    <div class="card">
+
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">Best sell</h5>
+
+                            <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+                            <script>
+                                $(document).ready(function() {
+                                    // Lấy phần tử HTML chứa biểu đồ
+                                    var chartContainer = $("#trafficChart");
+                                    var data = JSON.parse('{!! $order !!}');
+
+                                    var dataSeries = data.map(function(item) {
+                                        return item.total;
+                                    });
+
+                                    var dataLabels = data.map(function(item) {
+                                        return item.product_name;
+                                    });
+
+
+                                    // Tạo biểu đồ bằng ApexCharts
+                                    var chartOptions = {
+                                        chart: {
+                                            type: "bar",
+                                            height: 350
+                                        },
+                                        series: [{
+                                            name: "Series 1",
+                                            data: dataSeries
+                                        }],
+                                        xaxis: {
+                                            categories: dataLabels
+                                        },
+                                        emphasis: {
+                                            label: {
+                                                show: true,
+                                                fontSize: '18',
+                                                fontWeight: 'bold'
+                                            }
+                                        },
+                                    };
+
+                                    var chart = new ApexCharts(chartContainer[0], chartOptions);
+                                    chart.render();
+                                });
+                            </script>
+
+                        </div>
+                    </div><!-- End Website Traffic -->
+
+                    <!-- Website Traffic -->
+                    <div class="card">
+
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">Top order</h5>
+
+                            <div id="trafficChart1" style="min-height: 400px;" class="echart"></div>
+
+                            <script>
+                                $(document).ready(function() {
+                                    // Lấy phần tử HTML chứa biểu đồ
+                                    var chartContainer = $("#trafficChart1");
+
+                                    var data = JSON.parse('{!! $orderData !!}');
+
+                                    var dataSeries = data.map(function(item) {
+                                        return item.total_money;
+                                    });
+
+                                    var dataLabels = data.map(function(item) {
+                                        return item.customer_name;
+                                    });
+
+                                    // Tạo biểu đồ bằng ApexCharts
+                                    var chartOptions = {
+                                        chart: {
+                                            type: "bar",
+                                            height: 350
+                                        },
+                                        series: [{
+                                            name: "Series 1",
+                                            data: dataSeries
+                                        }],
+                                        xaxis: {
+                                            categories: dataLabels
+                                        },
+                                        emphasis: {
+                                            label: {
+                                                show: true,
+                                                fontSize: '18',
+                                                fontWeight: 'bold'
+                                            }
+                                        },
+                                    };
+
+                                    var chart = new ApexCharts(chartContainer[0], chartOptions);
+                                    chart.render();
+                                });
+                            </script>
+
+                        </div>
+                    </div><!-- End Website Traffic -->
+
+                </div><!-- End Right side columns -->
 
             </div>
         </section>

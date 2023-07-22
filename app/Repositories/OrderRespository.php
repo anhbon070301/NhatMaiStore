@@ -16,7 +16,7 @@ class OrderRespository extends BaseRepository implements OrderRepositoryInterfac
         return Order::class;
     }
 
-        /**
+    /**
      * list paginate
      * @param array $conditions
      * @return array
@@ -26,5 +26,17 @@ class OrderRespository extends BaseRepository implements OrderRepositoryInterfac
         $this->applyConditions(condition($conditions));
         return $this->model
                     ->paginate(Common::PAGINATE_BE);
+    }
+
+    /**
+     * get top order
+     * @param array $conditions
+     * @return array
+     */
+    public function getOrder()
+    {
+        return $this->model
+                    ->orderBy('total_money','DESC')
+                    ->paginate(Common::PAGINATE_HOME);
     }
 }

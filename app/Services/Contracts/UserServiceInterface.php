@@ -15,4 +15,6 @@ interface UserServiceInterface
     public function detail(int $id);
 
     public function updateActive(array $attribute);
+
+    public function countUser();
 }

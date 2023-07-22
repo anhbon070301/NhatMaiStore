@@ -17,7 +17,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return Admin::class;
     }
 
-        /**
+    /**
      * list paginate
      * @param array $conditions
      * @return array
@@ -27,5 +27,10 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->applyConditions(condition($conditions));
         return $this->model
                     ->paginate(Common::PAGINATE_BE);
+    }
+
+    public function countUser() 
+    {
+        return $this->model->count();
     }
 }

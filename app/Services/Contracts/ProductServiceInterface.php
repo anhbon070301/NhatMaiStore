@@ -15,4 +15,6 @@ interface ProductServiceInterface
     public function detail(int $id);
 
     public function updateActive(array $attribute);
+
+    public function getProduct();
 }

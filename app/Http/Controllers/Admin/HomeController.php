@@ -8,7 +8,9 @@ use App\Models\Order_item;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\OrderServiceInterface;
+use App\Services\Contracts\ProductServiceInterface;
 use App\Services\Contracts\ReportServiceInterface;
+use App\Services\Contracts\UserServiceInterface;
 
 class HomeController extends Controller
 {
@@ -16,6 +18,8 @@ class HomeController extends Controller
     protected $categoryServiceInterface;
     protected $orderServiceInterface;
     protected $reportServiceInterface;
+    protected $productServiceInterface;
+    protected $userServiceInterface;
 
     /**
      * @param BannerServiceInterface $bannerServiceInterface
@@ -25,22 +29,27 @@ class HomeController extends Controller
         CategoryServiceInterface $categoryServiceInterface,
         OrderServiceInterface    $orderServiceInterface,
         ReportServiceInterface   $reportServiceInterface,
+        ProductServiceInterface  $productServiceInterface,
+        UserServiceInterface     $userServiceInterface
     ) {
         $this->brandServiceInterface    = $brandServiceInterface;
         $this->categoryServiceInterface = $categoryServiceInterface;
         $this->orderServiceInterface    = $orderServiceInterface;
         $this->reportServiceInterface   = $reportServiceInterface;
+        $this->productServiceInterface  = $productServiceInterface;
+        $this->userServiceInterface     = $userServiceInterface;
     }
     
     public function home()
     {
         $categories = $this->categoryServiceInterface->getAll();
         $brands = $this->brandServiceInterface->getAll();
-        $order = $this->orderServiceInterface->listItem();
-        $orderData = $this->orderServiceInterface->list([]);
-        $comment = $this->reportServiceInterface->list([]);
-        $array = $this->orderServiceInterface->count();
+        $order = json_encode($this->orderServiceInterface->listItem()->toArray()["data"]);
+        $orderData = json_encode($this->orderServiceInterface->getOrder()->toArray()["data"]);
+        $product = json_encode($this->productServiceInterface->getProduct()->toArray()["data"]);
+        $total = $this->orderServiceInterface->count();
+        $totalUser = $this->userServiceInterface->countUser();
 
-        return view('admin/home', compact('categories', 'brands', 'order', 'orderData', 'comment', 'array'));
+        return view('admin/home', compact('categories', 'brands', 'order', 'orderData', 'total', 'product', 'totalUser'));
     }
 }

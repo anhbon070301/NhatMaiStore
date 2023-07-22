@@ -8,6 +8,7 @@ use App\Models\Order_item;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\OrderServiceInterface;
+use App\Services\Contracts\ProductServiceInterface;
 use App\Services\Contracts\ReportServiceInterface;
 
 class ReportController extends Controller
@@ -16,6 +17,7 @@ class ReportController extends Controller
     protected $categoryServiceInterface;
     protected $orderServiceInterface;
     protected $reportServiceInterface;
+    protected $productServiceInterface;
 
     /**
      * @param BannerServiceInterface $bannerServiceInterface
@@ -25,11 +27,13 @@ class ReportController extends Controller
         CategoryServiceInterface $categoryServiceInterface,
         OrderServiceInterface    $orderServiceInterface,
         ReportServiceInterface   $reportServiceInterface,
+        ProductServiceInterface  $productServiceInterface
     ) {
         $this->brandServiceInterface    = $brandServiceInterface;
         $this->categoryServiceInterface = $categoryServiceInterface;
         $this->orderServiceInterface    = $orderServiceInterface;
         $this->reportServiceInterface   = $reportServiceInterface;
+        $this->productServiceInterface  = $productServiceInterface;
     }
 
     /**
@@ -41,15 +45,10 @@ class ReportController extends Controller
     {
         $categories = $this->categoryServiceInterface->getAll();
         $brands = $this->brandServiceInterface->getAll();
-        $order = Order_item::groupBy('product_name')
-                                ->groupBy('product_id')
-                                ->groupBy('product_image')
-                                ->select('product_name', 'product_id','product_image', Order_item::raw('sum(product_quantity) as total'))
-                                ->orderBy('total', 'desc')
-                                ->paginate(Common::PAGINATE_HOME);
-        $orderData = $this->orderServiceInterface->list([]);
-        $comment = $this->reportServiceInterface->list([]);
-        
-        return view('admin/report/report', compact('categories', 'brands', 'order', 'orderData', 'comment'));
+        $order = json_encode($this->orderServiceInterface->listItem()->toArray()["data"]);
+        $orderData = json_encode($this->orderServiceInterface->getOrder()->toArray()["data"]);
+        $product = json_encode($this->productServiceInterface->getProduct()->toArray()["data"]);
+
+        return view('admin/report/report', compact('categories', 'brands', 'order', 'orderData', 'product'));
     }
 }

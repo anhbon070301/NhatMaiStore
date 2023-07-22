@@ -74,4 +74,9 @@ class UserService implements UserServiceInterface
 
         return $this->userRepository->updateActive($attribute['id'], $value);
     }
+
+    public function countUser()
+    {
+        return $this->userRepository->countUser();
+    }
 }

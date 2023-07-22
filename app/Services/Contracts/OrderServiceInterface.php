@@ -19,4 +19,6 @@ interface OrderServiceInterface
     public function count();
 
     public function listItem();
+
+    public function getOrder();
 }

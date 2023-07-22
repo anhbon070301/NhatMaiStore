@@ -38,5 +38,5 @@ class Common
         ""
     ];
 
-    const PAGINATE_HOME = 3;
+    const PAGINATE_HOME = 5;
 }

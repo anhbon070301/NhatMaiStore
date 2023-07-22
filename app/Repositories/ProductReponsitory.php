@@ -23,4 +23,16 @@ class ProductReponsitory extends BaseRepository implements ProductReponsitoryInt
                     ->orderBy('sort_order', 'ASC')
                     ->paginate(Common::PAGINATE_BE);
     }
+
+    /**
+     * get list product
+     * @param array $conditions
+     * @return array
+     */
+    public function getProduct()
+    {
+        return $this->model
+                    ->orderBy('amount','DESC')
+                    ->paginate(Common::PAGINATE_HOME);
+    }
 }

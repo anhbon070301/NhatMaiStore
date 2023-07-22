@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    @include ('admin.common.head')
+@include ('admin.common.head')
+
 <body>
     @include ('admin.common.index')
 
@@ -29,30 +30,15 @@
                         <div class="col-xxl-4 col-md-6">
                             <div class="card info-card sales-card">
 
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Sales <span>| Today</span></h5>
+                                    <h5 class="card-title">Sold <span>| This Month</span></h5>
 
                                     <div class="d-flex align-items-center">
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <i class="bi bi-cart"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>{{ $array->total_products }}</h6>
-                                            <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+                                            <h6>{{ $total->total_products }}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -64,19 +50,6 @@
                         <div class="col-xxl-4 col-md-6">
                             <div class="card info-card revenue-card">
 
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
                                     <h5 class="card-title">Revenue <span>| This Month</span></h5>
 
@@ -85,9 +58,7 @@
                                             <i class="bi bi-currency-dollar"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>$3,264</h6>
-                                            <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+                                            <h6>{{ number_format($total->total_money) }}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -100,30 +71,15 @@
 
                             <div class="card info-card customers-card">
 
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Customers <span>| This Year</span></h5>
+                                    <h5 class="card-title">Customers</h5>
 
                                     <div class="d-flex align-items-center">
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <i class="bi bi-people"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>1244</h6>
-                                            <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-
+                                            <h6>{{ $totalUser }}</h6>
                                         </div>
                                     </div>
 
@@ -136,21 +92,8 @@
                         <div class="col-12">
                             <div class="card">
 
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Reports <span>/Today</span></h5>
+                                    <h5 class="card-title">Inventory</h5>
 
                                     <!-- Line Chart -->
                                     <div id="reportsChart"></div>
@@ -159,62 +102,43 @@
                                             // Lấy phần tử HTML chứa biểu đồ
                                             var chartContainer = $("#reportsChart");
 
-                                            var data = [{
-                                                name: 'Sales',
-                                                data: [31, 40, 28, 51, 42, 82, 56],
-                                            }, {
-                                                name: 'Revenue',
-                                                data: [11, 32, 45, 32, 34, 52, 41]
-                                            }, {
-                                                name: 'Customers',
-                                                data: [15, 11, 32, 18, 9, 24, 11]
-                                            }];
+                                            var data = JSON.parse('{!! $product !!}');
+
+                                            var dataSeries = data.map(function(item) {
+                                                return item.amount;
+                                            });
+
+                                            var dataLabels = data.map(function(item) {
+                                                return item.name;
+                                            });
 
                                             // Tạo biểu đồ bằng ApexCharts
                                             var chartOptions = {
-                                                series: data,
                                                 chart: {
-                                                    height: 350,
-                                                    type: 'area',
-                                                    toolbar: {
-                                                        show: false
-                                                    },
+                                                    type: "bar",
+                                                    height: 350
                                                 },
-                                                markers: {
-                                                    size: 4
+                                                series: [{
+                                                    name: "Series 1",
+                                                    data: dataSeries
+                                                }],
+                                                xaxis: {
+                                                    categories: dataLabels
                                                 },
-                                                colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                                                fill: {
-                                                    type: "gradient",
-                                                    gradient: {
-                                                        shadeIntensity: 1,
-                                                        opacityFrom: 0.3,
-                                                        opacityTo: 0.4,
-                                                        stops: [0, 90, 100]
+                                                emphasis: {
+                                                    label: {
+                                                        show: true,
+                                                        fontSize: '18',
+                                                        fontWeight: 'bold'
                                                     }
                                                 },
-                                                dataLabels: {
-                                                    enabled: false
-                                                },
-                                                stroke: {
-                                                    curve: 'smooth',
-                                                    width: 2
-                                                },
-                                                xaxis: {
-                                                    type: 'datetime',
-                                                    categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                                                },
-                                                tooltip: {
-                                                    x: {
-                                                        format: 'dd/MM/yy HH:mm'
-                                                    },
-                                                }
                                             };
 
                                             var chart = new ApexCharts(chartContainer[0], chartOptions);
                                             chart.render();
                                         });
                                     </script>
+
                                     <!-- End Line Chart -->
 
                                 </div>
@@ -250,21 +174,9 @@
 
                     <!-- Website Traffic -->
                     <div class="card">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
 
                         <div class="card-body pb-0">
-                            <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+                            <h5 class="card-title">Best sell</h5>
 
                             <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
 
@@ -272,12 +184,16 @@
                                 $(document).ready(function() {
                                     // Lấy phần tử HTML chứa biểu đồ
                                     var chartContainer = $("#trafficChart");
+                                    var data = JSON.parse('{!! $order !!}');
 
-                                    // Dữ liệu mẫu cho biểu đồ
-                                    var chartData = {
-                                        series: [44, 55, 13, 43, 22],
-                                        labels: ["A", "B", "C", "D", "E"]
-                                    };
+                                    var dataSeries = data.map(function(item) {
+                                        return item.total;
+                                    });
+
+                                    var dataLabels = data.map(function(item) {
+                                        return item.product_name;
+                                    });
+
 
                                     // Tạo biểu đồ bằng ApexCharts
                                     var chartOptions = {
@@ -287,10 +203,10 @@
                                         },
                                         series: [{
                                             name: "Series 1",
-                                            data: chartData.series
+                                            data: dataSeries
                                         }],
                                         xaxis: {
-                                            categories: chartData.labels
+                                            categories: dataLabels
                                         },
                                         emphasis: {
                                             label: {
@@ -311,21 +227,9 @@
 
                     <!-- Website Traffic -->
                     <div class="card">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
 
                         <div class="card-body pb-0">
-                            <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+                            <h5 class="card-title">Top order</h5>
 
                             <div id="trafficChart1" style="min-height: 400px;" class="echart"></div>
 
@@ -334,11 +238,15 @@
                                     // Lấy phần tử HTML chứa biểu đồ
                                     var chartContainer = $("#trafficChart1");
 
-                                    // Dữ liệu mẫu cho biểu đồ
-                                    var chartData = {
-                                        series: [44, 55, 13, 43, 22],
-                                        labels: ["A", "B", "C", "D", "E"]
-                                    };
+                                    var data = JSON.parse('{!! $orderData !!}');
+
+                                    var dataSeries = data.map(function(item) {
+                                        return item.total_money;
+                                    });
+
+                                    var dataLabels = data.map(function(item) {
+                                        return item.customer_name;
+                                    });
 
                                     // Tạo biểu đồ bằng ApexCharts
                                     var chartOptions = {
@@ -348,10 +256,10 @@
                                         },
                                         series: [{
                                             name: "Series 1",
-                                            data: chartData.series
+                                            data: dataSeries
                                         }],
                                         xaxis: {
-                                            categories: chartData.labels
+                                            categories: dataLabels
                                         },
                                         emphasis: {
                                             label: {
@@ -378,4 +286,5 @@
 
     @include ('admin.common.footer')
 </body>
+
 </html>
