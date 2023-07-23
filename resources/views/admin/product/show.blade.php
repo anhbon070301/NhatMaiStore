@@ -5,14 +5,13 @@
 <body>
     @include ('admin.common.index')
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" /> -->
-
     <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('homeAdmin')}}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{route('indexProduct')}}">Product</a></li>
                     <li class="breadcrumb-item active">List</li>
                 </ol>
@@ -183,9 +182,11 @@
                     <!-- Basic Pagination -->
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="{{$products->previousPageUrl()}}"><<</a></li>
+                            <li class="page-item"><a class="page-link" href="{{$products->previousPageUrl()}}">
+                                    <<< /a>
+                            </li>
                             @foreach($products->links()->getData()["elements"][0] as $key => $item)
-                                <li class="page-item"><a class="page-link" href="{{$item}}">{{$key}}</a></li>
+                            <li class="page-item"><a class="page-link" href="{{$item}}">{{$key}}</a></li>
                             @endforeach
                             <li class="page-item"><a class="page-link" href="{{$products->nextPageUrl()}}">>></a></li>
                         </ul>

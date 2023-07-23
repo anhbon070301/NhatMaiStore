@@ -5,14 +5,13 @@
 <body>
     @include ('admin.common.index')
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" /> -->
-
     <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('homeAdmin')}}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{route('indexUser')}}">Account</a></li>
                     <li class="breadcrumb-item active">List</li>
                 </ol>
@@ -90,6 +89,25 @@
                     </div>
                 </div><!-- End Left side columns -->
 
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12" style="display: flex; justify-content: center;">
+                    <!-- Basic Pagination -->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="{{$users->previousPageUrl()}}">
+                                    << </a>
+                            </li>
+                            @foreach($users->links()->getData()["elements"][0] as $key => $item)
+                            <li class="page-item"><a class="page-link" href="{{$item}}">{{$key}}</a></li>
+                            @endforeach
+                            <li class="page-item"><a class="page-link" href="{{$users->nextPageUrl()}}">>></a></li>
+                        </ul>
+                    </nav><!-- End Basic Pagination -->
+                </div>
             </div>
         </section>
     </main><!-- End #main -->

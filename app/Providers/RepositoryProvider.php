@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\AdminRepository;
 use App\Repositories\BannerRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\CategoryReponsitory;
 use App\Repositories\Contract\TestRepository;
+use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\BannerRepositoryInterface;
 use App\Repositories\Contracts\BrandRepositoryInterface;
 use App\Repositories\Contracts\CategoryReponsitoryInterface;
@@ -42,6 +44,7 @@ class RepositoryProvider extends ServiceProvider
         $this->app->bind(OrderRepositoryInterface::class, OrderRespository::class);
         $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
         $this->app->bind(ReportRepositoryInterface::class, ReportRepository::class);
+        $this->app->bind(AdminRepositoryInterface::class, AdminRepository::class);
     }
 
     /**

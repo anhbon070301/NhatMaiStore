@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Support\Facades\Hash;
@@ -9,13 +10,19 @@ use Illuminate\Support\Facades\Hash;
 class UserService implements UserServiceInterface
 {
     protected $userRepository;
+    protected $adminRepositoryInterface;
 
     /**
      * @param UserRepositoryInterface $userRepository
+     * @param AdminRepositoryInterface $adminRepositoryInterface
      */
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct (
+        UserRepositoryInterface $userRepository,
+        AdminRepositoryInterface $adminRepositoryInterface
+    )
     {
-        return $this->userRepository = $userRepository;
+        $this->userRepository           = $userRepository;
+        $this->adminRepositoryInterface = $adminRepositoryInterface;
     }
 
     /**
@@ -24,7 +31,7 @@ class UserService implements UserServiceInterface
      */
     public function list(array $attributes)
     {
-        return $this->userRepository->list($attributes);
+        return $this->adminRepositoryInterface->list($attributes);
     }
 
     /**
@@ -35,7 +42,7 @@ class UserService implements UserServiceInterface
     {
         $attributes["password"] = Hash::make($attributes["password"]);
         
-        return $this->userRepository->create($attributes);
+        return $this->adminRepositoryInterface->create($attributes);
     }
 
     /**
@@ -45,7 +52,7 @@ class UserService implements UserServiceInterface
      */
     public function update(array $attributes, int $id)
     {
-        return $this->userRepository->update($attributes, $id);
+        return $this->adminRepositoryInterface->update($attributes, $id);
     }
 
     /**
@@ -54,7 +61,7 @@ class UserService implements UserServiceInterface
      */
     public function delete(int $id): int
     {
-        return $this->userRepository->delete($id);
+        return $this->adminRepositoryInterface->delete($id);
     }
 
     /**
@@ -63,7 +70,7 @@ class UserService implements UserServiceInterface
      */
     public function detail(int $id)
     {
-        return $this->userRepository->find($id);
+        return $this->adminRepositoryInterface->find($id);
     }
 
     public function updateActive(array $attribute) 

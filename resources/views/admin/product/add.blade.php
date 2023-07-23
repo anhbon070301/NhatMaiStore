@@ -11,6 +11,7 @@
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('homeAdmin')}}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{route('indexProduct')}}">Product</a></li>
                     <li class="breadcrumb-item active">Add</li>
                 </ol>

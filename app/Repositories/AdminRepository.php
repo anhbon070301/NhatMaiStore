@@ -3,17 +3,17 @@
 namespace App\Repositories;
 
 use App\Constants\Common;
-use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Models\Admin;
+use App\Repositories\Contracts\AdminRepositoryInterface;
 
-class UserRepository extends BaseRepository implements UserRepositoryInterface
+class AdminRepository extends BaseRepository implements AdminRepositoryInterface
 {
     /**
      * @return string
      */
     public function model(): string
     {
-        return User::class;
+        return Admin::class;
     }
 
     /**

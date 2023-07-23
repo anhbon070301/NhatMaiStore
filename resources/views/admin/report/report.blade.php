@@ -5,14 +5,13 @@
 <body>
     @include ('admin.common.index')
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" /> -->
-
     <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('homeAdmin')}}">Home</a></li>
                     <li class="breadcrumb-item">Report</li>
                 </ol>
             </nav>
@@ -24,7 +23,7 @@
                 <!-- Left side columns -->
                 <div class="col-lg-8">
                     <div class="row">
-                    
+
                         <!-- Reports -->
                         <div class="col-12">
                             <div class="card">
@@ -225,4 +224,3 @@
 </body>
 
 </html>
-

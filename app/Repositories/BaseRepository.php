@@ -228,8 +228,6 @@ abstract class BaseRepository extends L5Repository implements RepositoryInterfac
 
     public function getAll() 
     {
-        return $this->model
-                ->where("active", Common::ACTIVE)
-                ->get();
+        return $this->model->get();
     }
 }

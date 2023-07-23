@@ -11,8 +11,10 @@
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('homeAdmin')}}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{route('showBrand')}}">Brand</a></li>
-                    <li class="breadcrumb-item active">Add</li>
+                    <li class="breadcrumb-item active">Edit</li>
+                    <li class="breadcrumb-item active">{{ $product->name ?? "" }}</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
