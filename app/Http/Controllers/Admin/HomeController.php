@@ -52,4 +52,12 @@ class HomeController extends Controller
 
         return view('admin/home', compact('categories', 'brands', 'order', 'orderData', 'total', 'product', 'totalUser'));
     }
+
+    public function contact()
+    {
+        $categories = $this->categoryServiceInterface->getAll();
+        $brands = $this->brandServiceInterface->getAll();
+
+        return view('admin.profile.contact', compact('categories', 'brands'));
+    }
 }

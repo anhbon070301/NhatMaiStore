@@ -183,7 +183,7 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item"><a class="page-link" href="{{$products->previousPageUrl()}}">
-                                    <<< /a>
+                                    << </a>
                             </li>
                             @foreach($products->links()->getData()["elements"][0] as $key => $item)
                             <li class="page-item"><a class="page-link" href="{{$item}}">{{$key}}</a></li>

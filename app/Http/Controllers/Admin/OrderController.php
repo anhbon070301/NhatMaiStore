@@ -10,12 +10,13 @@ use App\Models\Ward;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\OrderServiceInterface;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\Reader\Xls\Style\Border;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PhpOffice\PhpSpreadsheet\Reader\Xml\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class OrderController extends Controller
 {
@@ -43,6 +44,8 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        Session::put('data', $request->all());
+
         $orders = $this->orderServiceInterface->list($request->all());
 
         $categories = $this->categoryServiceInterface->getAll();
@@ -70,24 +73,7 @@ class OrderController extends Controller
     
     public function select_delivery(Request $request)
     {
-        $data = $request->all();
-        $output = "";
-        if ($data['action']) {
-            if ($data['action'] == 'provinces') {
-                $huyen = District::where('province_id', $data['id'])->get();
-                $output .= '<option value="">---Select districts---</option>';
-                foreach ($huyen as $h) {
-                    $output .= '<option value="' . $h->id . '">' . $h->name . '</option>';
-                }
-            } else {
-                $xa = Ward::where('district_id', $data['id'])->get();
-                $output .= '<option value="">---Select wards---</option>';
-                foreach ($xa as $x) {
-                    $output .= '<option value="' . $x->id . '">' . $x->name . '</option>';
-                }
-            }
-            echo $output;
-        }
+        return $this->orderServiceInterface->select_delivery($request->all());
     }
 
     public function showbyId($id)
@@ -98,14 +84,14 @@ class OrderController extends Controller
 
         $order = $this->orderServiceInterface->detail($id);
         
-        $itemOrder = DB::select("SELECT * FROM orders join order_items on orders.id = order_items.order_id WHERE orders.customer_email like '%" . $order->customer_email . "%' and orders.id =" . $order->id);
+        $itemOrder = $this->orderServiceInterface->showListItem($order);
 
         return view('admin/order/detail', compact('categories', 'brands', 'order', 'itemOrder'));
     }
 
-    public function export(Request $request)
+    public function export()
     {
-        $orders = $this->search($request->name, $request->phone, $request->email, $request->status);
+        $orders = $this->orderServiceInterface->list(Session::get('data'));
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $i = 3;
@@ -185,5 +171,6 @@ class OrderController extends Controller
         header("Cache-Control: cache, must-revalidate");
         header("Pragma: public");
         $writer->save("php://output");
+        Session::forget('data');
     }
 }

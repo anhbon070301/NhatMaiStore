@@ -84,8 +84,12 @@ Route::prefix('admin')->group(function () {
      Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('editUser');
      Route::post('/user/update/{id}', [UserController::class, 'update'])->name('updateUser');
      Route::get('/user/destroy/{id}', [UserController::class, 'destroy'])->name('destroyUser');
+     Route::get('/user/show/{id}', [UserController::class, 'show'])->name('showUser');
+     Route::post('/user/update-profile/{id}', [UserController::class, 'updateProfile'])->name('updateProfile');
 
     Route::get('/report', [ReportController::class, 'index'])->name('indexReport');
+
+    Route::get('/contact', [HomeController::class, 'contact'])->name("contact");
 });
 
 Route::get('forget-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');

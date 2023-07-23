@@ -61,15 +61,7 @@
                                                     <div class="control-group col-md-6">
                                                         <button class="btn btn-secondary" name="btnSearch" value="btnSearch"><i class="ri-search-2-line"></i></button> &emsp;
                                                         <a href="{{ route('indexOrder') }}" class="btn btn-secondary"><i class="ri-arrow-go-back-line"></i></a>
-                                                    </div>
-                                                    <div class="control-group col-md-6">
-                                                        <form action="{{route('exportOrder')}}" method="get">
-                                                            <input type="hidden" name="name">
-                                                            <input type="hidden" name="phone">
-                                                            <input type="hidden" name="email">
-                                                            <input type="hidden" name="status">
-                                                            <button type="submit" class="btn btn-primary"><i class="ri-file-excel-2-line"></i></button>
-                                                        </form>
+                                                        <a href="{{ route('exportOrder') }}" class="btn btn-secondary"><i class="ri-file-excel-2-line"></i></a>
                                                     </div>
                                                 </div>
 
@@ -77,7 +69,6 @@
 
                                         </div>
                                     </form>
-
                                 </div>
 
                                 <div class="widget-content">

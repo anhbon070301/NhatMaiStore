@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateProfileRequest;
+use App\Rules\CurrentPassword;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\UserServiceInterface;
@@ -88,11 +90,32 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Brand
         $staff = $this->userServiceInterface->update($request->all(), $id);
 
         session()->flash('messageUpdate', $staff->name . ' has been updated.');
         return redirect()->route('indexUser');
+    }
+
+    public function show($id)
+    {
+        //all category
+        $categories = $this->categoryServiceInterface->getAll();
+
+        //all brand
+        $brands = $this->brandServiceInterface->getAll();
+
+        // Get Staff
+        $staff = $this->userServiceInterface->detail($id);
+
+        return view('admin/profile/show', compact('staff', 'categories', 'brands'));
+    }
+
+    public function updateProfile(UpdateProfileRequest $request, $id)
+    {
+        $staff = $this->userServiceInterface->update($request->all(), $id);
+
+        session()->flash('messageUpdate', $staff->name . ' has been updated.');
+        return redirect()->route('showUser', $id);
     }
 
     public function destroy($id)

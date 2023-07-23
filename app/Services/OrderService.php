@@ -110,4 +110,33 @@ class OrderService implements OrderServiceInterface
     {
         return $this->orderRepository->getOrder();
     }
+
+    public function showListItem(mixed $order)
+    {
+       $result = DB::select("SELECT * FROM orders join order_items on orders.id = order_items.order_id WHERE orders.customer_email like '%" . $order->customer_email . "%' and orders.id =" . $order->id);
+
+       return $result;
+    }
+
+    public function select_delivery(array $data)
+    {
+        $output = "";
+        if ($data['action']) {
+            if ($data['action'] == 'provinces') {
+                $huyen = DB::table("districts")->where('province_id', $data['id'])->get();
+                $output .= '<option value="">---Select districts---</option>';
+                foreach ($huyen as $h) {
+                    $output .= '<option value="' . $h->id . '">' . $h->name . '</option>';
+                }
+            } else {
+                $xa = DB::table("wards")->where('district_id', $data['id'])->get();
+                $output .= '<option value="">---Select wards---</option>';
+                foreach ($xa as $x) {
+                    $output .= '<option value="' . $x->id . '">' . $x->name . '</option>';
+                }
+            }
+        }
+
+        return $output;
+    }
 }

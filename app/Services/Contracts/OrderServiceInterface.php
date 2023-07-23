@@ -21,4 +21,8 @@ interface OrderServiceInterface
     public function listItem();
 
     public function getOrder();
+
+    public function showListItem(mixed $order);
+
+    public function select_delivery(array $data);
 }

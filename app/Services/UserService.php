@@ -52,6 +52,9 @@ class UserService implements UserServiceInterface
      */
     public function update(array $attributes, int $id)
     {
+        if (isset($attributes["password"])) {
+            $attributes["password"] = Hash::make($attributes["password"]);
+        }
         return $this->adminRepositoryInterface->update($attributes, $id);
     }
 
