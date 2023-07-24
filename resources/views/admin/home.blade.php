@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-@include ('admin.common.head')
+@include ('admin.common.head', ['pageTitle' => 'Home - My Custom Title'])
 
 <body>
     @include ('admin.common.index')
@@ -102,7 +102,6 @@
 
                                             var data = JSON.parse('{!! $product !!}');
                                             
-                                            console.log(data);
                                             var dataSeries = data.map(function(item) {
                                                 return item.amount;
                                             });
