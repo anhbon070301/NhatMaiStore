@@ -55,18 +55,8 @@
                                         <label class="control-label">Active</label>
                                         <div class="controls">
                                             <select class="form-select" name="active">
-                                                @if ($errors->any())
-                                                @if (old('active') == 1)
-                                                <option value="0">No</option>
-                                                <option value="1" selected>Yes</option>
-                                                @elseif (old('active') == 0)
-                                                <option value="0" selected>No</option>
-                                                <option value="1">Yes</option>
-                                                @endif
-                                                @else
-                                                <option value="1">Yes</option>
-                                                <option value="0">No</option>
-                                                @endif
+                                                <option value="1" {{ (old('active') ?? 1) == 1 ? 'selected' : '' }}>Yes</option>
+                                                <option value="0" {{ (old('active') ?? 0) == 0 ? 'selected' : '' }}>No</option>
                                             </select>
                                         </div> <!-- /controls -->
                                     </div> <!-- /control-group -->

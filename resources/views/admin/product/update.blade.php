@@ -12,7 +12,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('homeAdmin')}}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{route('showBrand')}}">Brand</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('indexProduct')}}">Product</a></li>
                     <li class="breadcrumb-item active">Edit</li>
                     <li class="breadcrumb-item active">{{ $product->name ?? "" }}</li>
                 </ol>
@@ -36,24 +36,11 @@
                                             <label class="control-label">Category <span style="color: red;">*</span></label>
                                             <div class="controls">
                                                 <select class="form-select" name="category_id">
+                                                    <option value="">-----</option>
                                                     @foreach ($categories as $categoryList)
-                                                    @if ($errors->any())
-                                                    @if (old('category_id') == $categoryList->id)
-                                                    <option value="{!! old('category_id') !!}" selected>
+                                                    <option value="{{ $categoryList->id }}" {{ (old('category_id') ?? $category->id) == $categoryList->id ? 'selected' : '' }}>
                                                         {{ $categoryList->name }}
                                                     </option>
-                                                    @else
-                                                    <option value="{{ $categoryList->id }}">{{ $categoryList->name }}
-                                                    </option>
-                                                    @endif
-                                                    @elseif ($categoryList->id == $category->id)
-                                                    <option value="{{ $categoryList->id }}" selected>
-                                                        {{ $categoryList->name }}
-                                                    </option>
-                                                    @else
-                                                    <option value="{{ $categoryList->id }}">{{ $categoryList->name }}
-                                                    </option>
-                                                    @endif
                                                     @endforeach
                                                 </select>
                                                 @error ('category_id')
@@ -66,20 +53,11 @@
                                             <label class="control-label">Brand <span style="color: red;">*</span></label>
                                             <div class="controls">
                                                 <select class="form-select" name="brand_id">
+                                                    <option value="">-----</option>
                                                     @foreach ($brands as $brandList)
-                                                    @if ($errors->any())
-                                                    @if (old('brand_id') == $brandList->id)
-                                                    <option value="{!! old('brand_id') !!}" selected>{{ $brandList->name }}
+                                                    <option value="{{ $brandList->id }}" {{ (old('brand_id') ?? $brand->id) == $brandList->id ? 'selected' : '' }}>
+                                                        {{ $brandList->name }}
                                                     </option>
-                                                    @else
-                                                    <option value="{{ $brandList->id }}">{{ $brandList->name }}</option>
-                                                    @endif
-                                                    @elseif ($brandList->id == $brand->id)
-                                                    <option value="{{ $brandList->id }}" selected>{{ $brandList->name }}
-                                                    </option>
-                                                    @else
-                                                    <option value="{{ $brandList->id }}">{{ $brandList->name }}</option>
-                                                    @endif
                                                     @endforeach
                                                 </select>
                                                 @error ('brand_id')
@@ -99,7 +77,6 @@
                                             @endif
 
                                             @error ('name')
-                                            <br>
                                             <label class="error">{{ $message }}</label>
                                             @enderror
                                         </div> <!-- /controls -->
@@ -115,7 +92,6 @@
                                                 <input class="form-control" name="price" value="{{ $product->price }}" type="text" />
                                                 @endif
                                                 @error ('price')
-                                                <br>
                                                 <label class="error">{{ $message }}</label>
                                                 @enderror
                                             </div> <!-- /controls -->
@@ -149,21 +125,8 @@
                                             <label class="control-label">Best sell</label>
                                             <div class="controls">
                                                 <select class="form-select" name="is_best_sell">
-                                                    @if ($errors->any())
-                                                    @if (old('is_best_sell') == 1)
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @elseif (old('is_best_sell') == 0)
-                                                    <option value="0" selected>No</option>
-                                                    <option value="1">Yes</option>
-                                                    @endif
-                                                    @elseif ($product->is_best_sell == 0)
-                                                    <option value="0" selected>No</option>
-                                                    <option value="1">Yes</option>
-                                                    @else
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @endif
+                                                    <option value="0" {{ (old('is_best_sell') ?? $product->is_best_sell) == 0 ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ (old('is_best_sell') ?? $product->is_best_sell) == 1 ? 'selected' : '' }}>Yes</option>
                                                 </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
@@ -172,21 +135,8 @@
                                             <label class="control-label">New</label>
                                             <div class="controls">
                                                 <select class="form-select" name="is_new">
-                                                    @if ($errors->any())
-                                                    @if (old('is_new') == 1)
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @elseif (old('is_new') == 0)
-                                                    <option value="0" selected>No</option>
-                                                    <option value="1">Yes</option>
-                                                    @endif
-                                                    @elseif ($product->is_new == 0)
-                                                    <option value="0" selected>No</option>
-                                                    <option value="1">Yes</option>
-                                                    @else
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @endif
+                                                    <option value="0" {{ (old('is_new') ?? $product->is_new) == 0 ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ (old('is_new') ?? $product->is_new) == 1 ? 'selected' : '' }}>Yes</option>
                                                 </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
@@ -200,7 +150,6 @@
                                                 <input type="number" class="form-control" name="sort_order" value="{{ $product->sort_order ?? 0 }}">
                                                 @endif
                                                 @error ('sort_order')
-                                                <br>
                                                 <label class="error">{{ $message }}</label>
                                                 @enderror
                                             </div> <!-- /controls -->
@@ -223,21 +172,8 @@
                                             <label class="control-label">Active</label>
                                             <div class="controls">
                                                 <select class="form-select" name="active">
-                                                    @if ($errors->any())
-                                                    @if (old('active') == 1)
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @elseif (old('active') == 0)
-                                                    <option value="0" selected>No</option>
-                                                    <option value="1">Yes</option>
-                                                    @endif
-                                                    @elseif ($product->active == 0)
-                                                    <option value="0" selected>No</option>
-                                                    <option value="1">Yes</option>
-                                                    @else
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @endif
+                                                    <option value="0" {{ (old('active') ?? $product->active) == 0 ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ (old('active') ?? $product->active) == 1 ? 'selected' : '' }}>Yes</option>
                                                 </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
@@ -267,10 +203,6 @@
                                             @else
                                             <textarea id="textareaDescription" name="description" class="tinymce-editor">{{ $product->description }}</textarea>
                                             @endif
-                                            @error ('description')
-                                            <br>
-                                            <label class="error">{{ $message }}</label>
-                                            @enderror
                                         </div> <!-- /controls -->
                                     </div> <!-- /control-group -->
 

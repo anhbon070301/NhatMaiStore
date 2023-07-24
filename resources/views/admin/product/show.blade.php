@@ -65,11 +65,7 @@
                                                     <select name="brand" class="form-select">
                                                         <option value="">-----</option>
                                                         @foreach ($brands as $brand)
-                                                        @if (request('brand') == $brand->id)
-                                                        <option value="{{ $brand->id }}" selected>{{ $brand->name }}</option>
-                                                        @else
-                                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                        @endif
+                                                        <option value="{{ $brand->id }}" {{ (request('brand') == $brand->id) ? 'selected' : '' }}>{{ $brand->name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error ('brand')
@@ -82,11 +78,7 @@
                                                     <select class="form-select" name="category">
                                                         <option value="">-----</option>
                                                         @foreach ($categories as $category)
-                                                        @if (request('category') == $category->id)
-                                                        <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                                                        @else
-                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                        @endif
+                                                        <option value="{{ $category->id }}" {{ (request('category') == $category->id) ? 'selected' : '' }}>{{ $category->name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error ('category')

@@ -38,16 +38,7 @@
                                                 <select class="form-select" name="category_id">
                                                     <option value="">------</option>
                                                     @foreach ($categories as $category)
-                                                    @if ($errors->any())
-                                                    @if (old('category_id') == $category->id)
-                                                    <option selected value="{!! old('category_id') !!}">{{ $category->name }}
-                                                    </option>
-                                                    @else
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                    @endif
-                                                    @else
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                    @endif
+                                                    <option value="{{ $category->id }}" {{ (old('category_id') !== "" && old('category_id') == $category->id) ? 'selected' : '' }}>{{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error ('category_id')
@@ -62,16 +53,7 @@
                                                 <select class="form-select" name="brand_id">
                                                     <option value="">------</option>
                                                     @foreach ($brands as $brand)
-                                                    @if ($errors->any())
-                                                    @if (old('brand_id') == $brand->id)
-                                                    <option selected value="{!! old('brand_id') !!}">{{ $brand->name }}
-                                                    </option>
-                                                    @else
-                                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                    @endif
-                                                    @else
-                                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                    @endif
+                                                    <option value="{{ $brand->id }}" {{ (old('brand_id') !== "" && old('brand_id') == $brand->id) ? 'selected' : '' }}>{{ $brand->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error ('brand_id')
@@ -122,13 +104,8 @@
                                             <label class="control-label">Best sell</label>
                                             <div class="controls">
                                                 <select class="form-select" name="is_best_sell">
-                                                    @if (old('is_best_sell') == 1)
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @else
-                                                    <option value="0">No</option>
-                                                    <option value="1">Yes</option>
-                                                    @endif
+                                                    <option value="0" {{ (old('is_best_sell') == '0') ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ (old('is_best_sell') == '1') ? 'selected' : '' }}>Yes</option>
                                                 </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
@@ -137,13 +114,8 @@
                                             <label class="control-label">New</label>
                                             <div class="controls">
                                                 <select class="form-select" name="is_new">
-                                                    @if (old('is_new') == 1)
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @else
-                                                    <option value="0">No</option>
-                                                    <option value="1">Yes</option>
-                                                    @endif
+                                                    <option value="0" {{ (old('is_new') == '0') ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ (old('is_new') == '1') ? 'selected' : '' }}>Yes</option>
                                                 </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
@@ -173,18 +145,8 @@
                                             <label class="control-label">Active</label>
                                             <div class="controls">
                                                 <select class="form-select" name="active">
-                                                    @if ($errors->any())
-                                                    @if (old('active') == 1)
-                                                    <option value="0">No</option>
-                                                    <option value="1" selected>Yes</option>
-                                                    @elseif (old('active') == 0)
-                                                    <option value="0" selected>No</option>
-                                                    <option value="1">Yes</option>
-                                                    @endif
-                                                    @else
-                                                    <option value="1">Yes</option>
-                                                    <option value="0">No</option>
-                                                    @endif
+                                                    <option value="1" {{ (old('active') ?? 1) == 1 ? 'selected' : '' }}>Yes</option>
+                                                    <option value="0" {{ (old('active') ?? 0) == 0 ? 'selected' : '' }}>No</option>
                                                 </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
