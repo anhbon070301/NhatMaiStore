@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\Product_imageController;
 use App\Http\Controllers\Admin\ProductController;
@@ -24,7 +25,10 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
-Route::prefix('admin')->group(function () {
+Route::get('admin/login', [LoginController::class, 'index'])->name('admin.login');
+Route::post('admin/login/submit', [LoginController::class, 'login'])->name('admin.login.submit');
+
+Route::prefix('admin')->middleware('isAdmin')->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('homeAdmin');
 
      //Category
@@ -93,3 +97,17 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('forget-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+
+Route::prefix('/')->group(function () {
+    Route::get('/', function() {
+        return view('web.home');
+    });
+
+    Route::get('/home', function() {
+        return view('web.home');
+    })->name('web.home');
+
+    Route::get('/product', function() {
+        return view('web.product');
+    })->name('web.product');
+});

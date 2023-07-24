@@ -42,8 +42,8 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        if (Auth::guard("admin")->attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('homeAdmin');
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return redirect()->route('web.home');
         } else {
             session()->flash('messageLoginError', 'User account or password incorrect');
             return redirect()->route('login');

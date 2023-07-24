@@ -1,83 +1,58 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="vi">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+	<title>{{ config('app.name', 'Laravel') }}</title>
+	<link rel="shortcut icon" href="img/favicon.ico" />
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+	<!-- Load font awesome icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+	 crossorigin="anonymous">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+	<!-- owl carousel libraries -->
+	<link rel="stylesheet" href="{{asset('front-end/js/owlcarousel/owl.carousel.min.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/js/owlcarousel/owl.theme.default.min.css')}}">
+	<script src="{{asset('front-end/js/Jquery/Jquery.min.js')}}"></script>
+	<script src="{{asset('front-end/js/owlcarousel/owl.carousel.min.js')}}"></script>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+	<!-- tidio - live chat -->
+	<!-- <script src="//code.tidio.co/bfiiplaaohclhqwes5xivoizqkq56guu.js"></script> -->
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+	<!-- our files -->
+	<!-- css -->
+	<link rel="stylesheet" href="{{asset('front-end/css/style.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/topnav.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/header.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/banner.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/taikhoan.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/trangchu.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/home_products.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/pagination_phantrang.css')}}">
+	<link rel="stylesheet" href="{{asset('front-end/css/footer.css')}}">
+	<!-- js -->
+	<script src="{{asset('front-end/data/products.js')}}"></script>
+	<script src="{{asset('front-end/js/classes.js')}}"></script>
+	<script src="{{asset('front-end/js/dungchung.js')}}"></script>
+	<script src="{{asset('front-end/js/trangchu.js')}}"></script>
+
 </head>
+
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+	<script> addTopNav(); </script>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+    @yield('content')
 
-                    </ul>
+	<script>
+		addContainTaiKhoan(); addPlc();
+	</script>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+	<div class="footer"><script>addFooter();</script></div>
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
+	<i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
 </body>
+
 </html>
