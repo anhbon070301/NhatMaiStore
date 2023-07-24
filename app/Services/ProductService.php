@@ -25,7 +25,7 @@ class ProductService implements ProductServiceInterface
     public function list(array $attributes)
     {
         $attributes = [
-            ["name", "LIKE", Arr::get($attributes, "searchInput")],
+            ["name", "LIKE", Arr::get($attributes, "name")],
             ["brand_id", "=", Arr::get($attributes, "brand")],
             ["category_id", "=", Arr::get($attributes, "category")],
             ["is_new", "=", Arr::get($attributes, "isNew")],

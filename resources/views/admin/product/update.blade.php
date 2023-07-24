@@ -212,9 +212,9 @@
                                             <label class="control-label">Amount </label>
                                             <div class="controls">
                                                 @if ($errors->any())
-                                                <input class="form-control" name="amount" value="{!! old('amount') !!}" type="number" />
+                                                <input class="form-control" name="amount" value="{!! old('amount', 0) !!}" type="number" />
                                                 @else
-                                                <input class="form-control" name="amount" value="{{ $product->amount }}" type="number" />
+                                                <input class="form-control" name="amount" value="{{ $product->amount ?? 0 }}" type="number" />
                                                 @endif
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
@@ -260,7 +260,7 @@
                                     </div>
 
                                     <div class="control-group">
-                                        <label class="control-label">Description <span style="color: red;">*</span></label>
+                                        <label class="control-label">Description</label>
                                         <div class="controls">
                                             @if ($errors->any())
                                             <textarea id="textareaDescription" name="description" class="tinymce-editor">{!! old('description') !!}</textarea>

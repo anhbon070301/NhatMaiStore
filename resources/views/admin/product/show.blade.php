@@ -54,7 +54,7 @@
                                             <div class="row">
                                                 <div class="control-group col-md-4">
                                                     <label class="control-label">Product's name</label>
-                                                    <input id='searchInput' class="form-control" name="name" type='text' placeholder="Product's name" value="{{ $name }}" />
+                                                    <input id='searchInput' class="form-control" name="name" type='text' placeholder="Product's name" value="{{ request('name') }}" />
                                                     @error ('name')
                                                     <label class="error">{{ $message }}</label>
                                                     @enderror
@@ -65,7 +65,7 @@
                                                     <select name="brand" class="form-select">
                                                         <option value="">-----</option>
                                                         @foreach ($brands as $brand)
-                                                        @if ($productBrand == $brand->id)
+                                                        @if (request('brand') == $brand->id)
                                                         <option value="{{ $brand->id }}" selected>{{ $brand->name }}</option>
                                                         @else
                                                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -82,7 +82,7 @@
                                                     <select class="form-select" name="category">
                                                         <option value="">-----</option>
                                                         @foreach ($categories as $category)
-                                                        @if ($productCategory == $category->id)
+                                                        @if (request('category') == $category->id)
                                                         <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
                                                         @else
                                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -99,9 +99,9 @@
                                                 <div class="control-group col-md-4">
                                                     <label class="control-label">Is New</label>
                                                     <select class="form-select" name="isNew">
-                                                        <option value="" selected>-----</option>
-                                                        <option value="0">No</option>
-                                                        <option value="1">Yes</option>
+                                                        <option value="">-----</option>
+                                                        <option value="0" {{ (request('isNew') == '0') ? 'selected' : '' }}>No</option>
+                                                        <option value="1" {{ (request('isNew') == '1') ? 'selected' : '' }}>Yes</option>
                                                     </select>
                                                     @error ('isNew')
                                                     <label class="error">{{ $message }}</label>
@@ -111,9 +111,9 @@
                                                 <div class="control-group col-md-4">
                                                     <label class="control-label">Best Sell</label>
                                                     <select class="form-select" name="bestSell">
-                                                        <option value="" selected>-----</option>
-                                                        <option value="0">No</option>
-                                                        <option value="1">Yes</option>
+                                                        <option value="">-----</option>
+                                                        <option value="0" {{ (request('bestSell') == '0') ? 'selected' : '' }}>No</option>
+                                                        <option value="1" {{ (request('bestSell') == '1') ? 'selected' : '' }}>Yes</option>
                                                     </select>
                                                     @error ('bestSell')
                                                     <label class="error">{{ $message }}</label>

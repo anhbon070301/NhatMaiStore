@@ -163,7 +163,10 @@
                                         <div class="control-group col-md-6">
                                             <label class="control-label">Amount <span style="color: red;">*</span></label>
                                             <div class="controls">
-                                                <input type="number" class="form-control" name="amount" value="{!! old('amount') !!}">
+                                                <input type="number" class="form-control" name="amount" value="{!! old('amount', 0) !!}">
+                                                @error ('amount')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                         <div class="control-group col-md-6">
@@ -203,7 +206,7 @@
                                     </div>
 
                                     <div class="control-group">
-                                        <label class="control-label">Description <span style="color: red;">*</span></label>
+                                        <label class="control-label">Description</label>
                                         <div class="controls">
                                             <textarea id="textareaDescription" name="description" class="tinymce-editor">{!! old('description') !!}</textarea>
                                             @error ('description')

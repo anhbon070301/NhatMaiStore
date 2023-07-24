@@ -28,8 +28,8 @@ class CreateProductRequest extends FormRequest
             'brand_id' => 'required',
             'name' => 'required|string',
             'price' => 'required|numeric' . ($this->input("old_price") ? "|max:" . $this->input("old_price") : ""),
-            'description' => 'required',
-            'sort_order' => 'required|numeric'
+            'sort_order' => 'required|numeric',
+            'amount' => 'required|numeric'
         ];
     }
 }
