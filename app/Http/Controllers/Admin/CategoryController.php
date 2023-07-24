@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constants\Common;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\CreateCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use Illuminate\Http\Request;
@@ -65,18 +67,8 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|unique:categories',
-            'sort_order' => 'required|numeric'
-        ], [
-            'name.required' => 'Category name has not been entered',
-            'name.unique' => 'Category name has been existed',
-            'sort_order.numeric' => 'Sort order is not number',
-            'sort_order.required' => 'Sort order has not been entered'
-        ]);
-
         // create category
         $category = $this->categoryServiceInterface->create($request->all());
 
@@ -111,18 +103,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        // validatation data
-        $request->validate([
-            'name' => 'required',
-            'sort_order' => 'required|numeric'
-        ], [
-            'name.required' => 'Category name has not been entered',
-            'sort_order.numeric' => 'Sort order is not number',
-            'sort_order.required' => 'Sort order has not been entered'
-        ]);
-
         // Category
         $category = $this->categoryServiceInterface->update($request->all(), $id);
 

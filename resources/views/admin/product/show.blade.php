@@ -54,7 +54,10 @@
                                             <div class="row">
                                                 <div class="control-group col-md-4">
                                                     <label class="control-label">Product's name</label>
-                                                    <input id='searchInput' class="form-control" name="searchInput" type='text' placeholder="Product's name" value="{{ $name }}" />
+                                                    <input id='searchInput' class="form-control" name="name" type='text' placeholder="Product's name" value="{{ $name }}" />
+                                                    @error ('name')
+                                                    <label class="error">{{ $message }}</label>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="control-group col-md-4">
@@ -69,6 +72,9 @@
                                                         @endif
                                                         @endforeach
                                                     </select>
+                                                    @error ('brand')
+                                                    <label class="error">{{ $message }}</label>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="control-group col-md-4">
@@ -83,6 +89,9 @@
                                                         @endif
                                                         @endforeach
                                                     </select>
+                                                    @error ('category')
+                                                    <label class="error">{{ $message }}</label>
+                                                    @enderror
                                                 </div>
                                             </div>
 
@@ -94,6 +103,9 @@
                                                         <option value="0">No</option>
                                                         <option value="1">Yes</option>
                                                     </select>
+                                                    @error ('isNew')
+                                                    <label class="error">{{ $message }}</label>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="control-group col-md-4">
@@ -103,6 +115,9 @@
                                                         <option value="0">No</option>
                                                         <option value="1">Yes</option>
                                                     </select>
+                                                    @error ('bestSell')
+                                                    <label class="error">{{ $message }}</label>
+                                                    @enderror
                                                 </div>
 
                                                 <div class="control-group col-md-4">

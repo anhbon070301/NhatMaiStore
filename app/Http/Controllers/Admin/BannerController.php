@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Banner\CreateBannerRequest;
+use App\Http\Requests\Banner\UpdateBannerRequest;
 use App\Services\Contracts\BannerServiceInterface;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
@@ -68,20 +70,8 @@ class BannerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateBannerRequest $request)
     {
-        $request->validate([
-            'title' => 'required|unique:banners',
-            'content' => 'required',
-            'sort_order' => 'required|numeric'
-        ], [
-            'title.required' => 'Title has not been entered',
-            'title.unique' => 'Title has been existed',
-            'content.required' => 'Content has not been entered',
-            'sort_order.numeric' => 'Sort order is not number',
-            'sort_order.required' => 'Sort order has not been entered'
-        ]);
-
         //create brand
         $banner = $this->bannerServiceInterface->create($request->all());
 
@@ -116,19 +106,8 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBannerRequest $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-            'sort_order' => 'required|numeric'
-        ], [
-            'title.required' => 'Title has not been entered',
-            'content.required' => 'Content has not been entered',
-            'sort_order.numeric' => 'Sort order is not number',
-            'sort_order.required' => 'Sort order has not been entered'
-        ]);
-
         //find banner
         $banner = $this->bannerServiceInterface->update($request->all(), $id);
 

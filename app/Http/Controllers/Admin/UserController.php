@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Rules\CurrentPassword;
+use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\UserServiceInterface;
@@ -53,21 +54,8 @@ class UserController extends Controller
         return view('admin/user/add', compact('categories', 'brands'));
     }
 
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        $request->validate([
-            'username' => 'required|unique:admin',
-            'email' => 'required|unique:users|email|string',
-            'password' => 'required|min:8',
-            'phone' => 'required|numeric'
-        ], [
-            'username.required' => 'Staff name has not been entered',
-            'email.unique' => 'Email has been existed',
-            'email.required' => 'Email has not been entered',
-            'phone.numeric' => 'Phone is not number',
-            'phone.required' => 'Phone has not been entered'
-        ]);
-
         $staff = $this->userServiceInterface->create($request->all());
 
         session()->flash('messageAdd', $staff->username . ' has been added.');
@@ -88,7 +76,7 @@ class UserController extends Controller
         return view('admin/user/update', compact('staff', 'categories', 'brands'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         $staff = $this->userServiceInterface->update($request->all(), $id);
 

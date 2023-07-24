@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constants\Common;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Brand\CreateBrandRequest;
+use App\Http\Requests\Brand\UpdateBrandRequest;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use Illuminate\Http\Request;
@@ -65,20 +67,8 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateBrandRequest $request)
     {
-        $request->validate([
-            'name' => 'required|unique:brands',
-            'link' => 'required',
-            'sort_order' => 'required|numeric'
-        ], [
-            'name.required' => 'Brand name has not been entered',
-            'name.unique' => 'Brand name has been existed',
-            'link.required' => 'Link has not been entered',
-            'sort_order.numeric' => 'Sort order is not number',
-            'sort_order.required' => 'Sort order has not been entered'
-        ]);
-
         // Create Brand
         $brand = $this->brandServiceInterface->create($request->all());
 
@@ -113,19 +103,8 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBrandRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'sort_order' => 'required|numeric',
-            'link' => 'required'
-        ], [
-            'name.required' => 'Brand name has not been entered',
-            'link.required' => 'Link has not been entered',
-            'sort_order.numeric' => 'Sort order is not number',
-            'sort_order.required' => 'Sort order has not been entered'
-        ]);
-
         // Brand
         $brand = $this->brandServiceInterface->update($request->all(), $id);
 

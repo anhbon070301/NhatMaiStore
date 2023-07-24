@@ -49,6 +49,9 @@
                                             @error ('image_url')
                                             <label class="error">{{ $message }}</label>
                                             @enderror
+                                            @error ('image_url.*')
+                                            <label class="error">{{ $message }}</label>
+                                            @enderror
                                         </div>
                                     </div>
 

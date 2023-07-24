@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constants\Common;
 use App\Http\Controllers\Controller;
-use App\Models\District;
+use App\Http\Requests\Order\FilterOrderRequest;
 use App\Models\Order_item;
-use App\Models\Ward;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\OrderServiceInterface;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -42,7 +40,7 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(FilterOrderRequest $request)
     {
         Session::put('data', $request->all());
 
