@@ -38,7 +38,7 @@
                                                     <div class="control-group col-md-4">
                                                         <label class="control-label">Customer's name</label>
                                                         <div class="controls">
-                                                            <input id='searchInput' class="form-control" name="inputName" type='text' placeholder="Customer's name" />
+                                                            <input id='searchInput' class="form-control" name="inputName" type='text' value="{{ request('inputName') }}" placeholder="Customer's name" />
                                                             @error ('inputName')
                                                             <label class="error">{{ $message }}</label>
                                                             @enderror
@@ -48,7 +48,7 @@
                                                     <div class="control-group col-md-4">
                                                         <label class="control-label">Phone</label>
                                                         <div class="controls">
-                                                            <input class="form-control" name="inputPhone" type='text' placeholder='Phone' />
+                                                            <input class="form-control" name="inputPhone" type='text' value="{{ request('inputPhone') }}" placeholder='Phone' />
                                                             @error ('inputPhone')
                                                             <label class="error">{{ $message }}</label>
                                                             @enderror
@@ -58,7 +58,7 @@
                                                     <div class="control-group col-md-4">
                                                         <label class="control-label">Email</label>
                                                         <div class="controls">
-                                                            <input class="form-control" name="inputEmail" type='text' placeholder='Email' />
+                                                            <input class="form-control" name="inputEmail" type='text' value="{{ request('inputEmail') }}" placeholder='Email' />
                                                             @error ('inputEmail')
                                                             <label class="error">{{ $message }}</label>
                                                             @enderror

@@ -158,7 +158,7 @@
 
                                     <div class="row">
                                         <div class="control-group col-md-6">
-                                            <label class="control-label">Amount </label>
+                                            <label class="control-label">Amount <span style="color: red;">*</span></label>
                                             <div class="controls">
                                                 @if ($errors->any())
                                                 <input class="form-control" name="amount" value="{!! old('amount', 0) !!}" type="number" />
@@ -194,6 +194,104 @@
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                     </div>
+
+                                    <!-- Specifications-->
+                                    <div class="row">
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">Screen <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[screen]" value="{{ old('specifications.screen') ?? $product->specifications->screen ?? '' }}">
+                                                @error ('specifications.screen')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">Operating system <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[operating_system]" value="{{ old('specifications.operating_system') ?? $product->specifications->operating_system ?? '' }}">
+                                                @error ('specifications.operating_system')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">Rear camera <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[rear_camera]" value="{{ old('specifications.rear_camera') ?? $product->specifications->rear_camera ?? '' }}">
+                                                @error ('specifications.rear_camera')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">Front camera <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[front_camera]" value="{{ old('specifications.front_camera') ?? $product->specifications->front_camera ?? '' }}">
+                                                @error ('specifications.front_camera')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">CPU <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[cpu]" value="{{ old('specifications.cpu') ?? $product->specifications->cpu ?? '' }}">
+                                                @error ('specifications.cpu')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">RAM <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[ram]" value="{{ old('specifications.ram') ?? $product->specifications->ram ?? '' }}">
+                                                @error ('specifications.ram')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">Internal memory <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[internal_memory]" value="{{ old('specifications.internal_memory') ?? $product->specifications->internal_memory ?? ''}}">
+                                                @error ('specifications.internal_memory')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">Memory Stick <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[memory_stick]" value="{{ old('specifications.memory_stick') ?? $product->specifications->memory_stick ?? '' }}">
+                                                @error ('specifications.memory_stick')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+
+                                        <div class="control-group col-md-4">
+                                            <label class="control-label">Battery <span style="color: red;">*</span></label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" name="specifications[battery]" value="{{ old('specifications.battery') ?? $product->specifications->battery ?? '' }}">
+                                                @error ('specifications.battery')
+                                                <label class="error">{{ $message }}</label>
+                                                @enderror
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                    </div>
+                                    <!-- End Specifications-->
 
                                     <div class="control-group">
                                         <label class="control-label">Description</label>

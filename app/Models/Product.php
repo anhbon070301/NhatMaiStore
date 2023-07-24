@@ -24,7 +24,8 @@ class Product extends Model
         'is_new',
         'sort_order',
         'active',
-        'amount'
+        'amount',
+        'specifications'
     ];
 
     public function category()
@@ -36,4 +37,8 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Brand');
     }
+
+    // protected $casts = [
+    //     'specifications' => 'array',
+    // ];
 }

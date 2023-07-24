@@ -28,3 +28,17 @@ if (!function_exists('condition')) {
         return $conditions;
     }
 }
+
+if (!function_exists('convertJson')) {
+    function convertJson(array $attribute)
+    {
+        return json_encode($attribute, true);
+    }
+}
+
+if (!function_exists('decodeJson')) {
+    function decodeJson(mixed $attribute)
+    {
+        return json_decode($attribute);
+    }
+}

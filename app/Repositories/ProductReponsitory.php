@@ -32,6 +32,7 @@ class ProductReponsitory extends BaseRepository implements ProductReponsitoryInt
     public function getProduct()
     {
         return $this->model
+                    ->select('id', 'name', 'amount')
                     ->orderBy('amount','DESC')
                     ->paginate(Common::PAGINATE_HOME);
     }

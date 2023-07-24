@@ -49,6 +49,8 @@ class ProductService implements ProductServiceInterface
             $attributes['image_url'] = "no-image.png";
         }
         
+        $attributes['specifications'] = convertJson($attributes['specifications']);
+
         return $this->productReponsitory->create($attributes);
     }
 
@@ -68,6 +70,8 @@ class ProductService implements ProductServiceInterface
             $attributes['image_url'] = $attributes['oldImage'];
         }
 
+        $attributes['specifications'] = convertJson($attributes['specifications']);
+
         return $this->productReponsitory->update($attributes, $id);
     }
 
@@ -86,7 +90,11 @@ class ProductService implements ProductServiceInterface
      */
     public function detail(int $id)
     {
-        return $this->productReponsitory->find($id);
+        $result = $this->productReponsitory->find($id);
+
+        $result['specifications'] = decodeJson($result['specifications']);
+
+        return $result;
     }
 
     public function updateActive(array $attribute) 

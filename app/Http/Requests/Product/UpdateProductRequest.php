@@ -29,7 +29,17 @@ class UpdateProductRequest extends FormRequest
             'name' => 'required|string',
             'price' => 'required|numeric' . ($this->input("old_price") ? "|max:" . $this->input("old_price") : ""),
             'sort_order' => 'required|numeric',
-            'amount' => 'required|numeric'
+            'amount' => 'required|numeric',
+            "specifications" => 'required|array',
+            "specifications.screen" => 'required|string',
+            "specifications.operating_system" => 'required|string',
+            "specifications.rear_camera" => 'required|string',
+            "specifications.front_camera" => 'required|string',
+            "specifications.cpu" => 'required|string',
+            "specifications.ram" => 'required|string',
+            "specifications.memory_stick" => 'required|string',
+            "specifications.internal_memory" => 'required|string',
+            "specifications.battery" => 'required|string',
         ];
     }
 }
