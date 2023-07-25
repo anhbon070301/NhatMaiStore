@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-@include ('admin.common.head', ['pageTitle' => 'Home - My Custom Title'])
+@include ('admin.common.head', ['pageTitle' => 'Home - Phone Admin'])
 
 <body>
     @include ('admin.common.index')

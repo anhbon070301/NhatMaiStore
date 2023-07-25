@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-@include ('admin.common.head')
+@include ('admin.common.head', ['pageTitle' => 'Create category - Phone Admin'])
 
 <body>
     @include ('admin.common.index')
