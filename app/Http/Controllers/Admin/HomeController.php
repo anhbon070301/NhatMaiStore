@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Constants\Common;
 use App\Http\Controllers\Controller;
-use App\Models\Order_item;
 use App\Services\Contracts\BrandServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\OrderServiceInterface;

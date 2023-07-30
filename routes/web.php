@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Product_imageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\HomeController as HomeControllerFE;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -99,9 +100,7 @@ Route::prefix('admin')->middleware('isAdmin')->group(function () {
 Route::get('forget-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
 
 Route::prefix('/')->group(function () {
-    Route::get('/', function() {
-        return view('web.home');
-    });
+    Route::get('/', [HomeControllerFE::class, 'index'])->name('web.home');
 
     Route::get('/home', function() {
         return view('web.home');

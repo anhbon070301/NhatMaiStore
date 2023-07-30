@@ -110,4 +110,9 @@ class ProductService implements ProductServiceInterface
     {
         return $this->productReponsitory->getProduct();
     }
+
+    public function getProductFE(array $conditions)
+    {
+        return $this->productReponsitory->getProductFE($conditions);
+    }
 }

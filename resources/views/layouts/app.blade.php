@@ -35,30 +35,20 @@
 					<div class="extras">
 						<ul>
 							<li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="page-shopping-cart.html"><b>3 items</b></a></li>
-							<li>
-								<div class="dropdown choose-country">
-									<a class="#" data-toggle="dropdown" href="#"><img src="img/flags/gb.png" alt="Great Britain"> UK</a>
-									<ul class="dropdown-menu" role="menu">
-										<li role="menuitem"><a href="#"><img src="img/flags/us.png" alt="United States"> US</a></li>
-										<li role="menuitem"><a href="#"><img src="img/flags/de.png" alt="Germany"> DE</a></li>
-										<li role="menuitem"><a href="#"><img src="img/flags/es.png" alt="Spain"> ES</a></li>
-									</ul>
-								</div>
-							</li>
 			        		<li><a href="page-login.html">Login</a></li>
 			        	</ul>
 					</div>
 		        </div>
 		        <nav id="mainmenu" class="mainmenu">
 					<ul>
-						<li class="logo-wrapper"><a href="index.html"><img src="img/mPurpose-logo.png" alt="Multipurpose Twitter Bootstrap Template"></a></li>
-						<li>
+						<li class="logo-wrapper"><a href="index.html"><img src="{{ asset('front-end/img/mPurpose-logo.png') }}" alt="Multipurpose Twitter Bootstrap Template"></a></li>
+						<li  class="{{(Route::currentRouteName() == 'web.home') ? 'active' : ''}}">
 							<a href="index.html">Home</a>
 						</li>
 						<li>
 							<a href="features.html">Features</a>
 						</li>
-						<li class="has-submenu active">
+						<li class="has-submenu">
 							<a href="#">Pages +</a>
 							<div class="mainmenu-submenu">
 								<div class="mainmenu-submenu-inner"> 
@@ -137,28 +127,6 @@
 		
 		@yield('content')
 
-	    <!-- Our Clients -->
-	    <div class="section">
-	    	<div class="container">
-	    		<h2>Our Clients</h2>
-				<div class="clients-logo-wrapper text-center row">
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/canon.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/cisco.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/dell.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/ea.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/ebay.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/facebook.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/google.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/hp.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/microsoft.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/mysql.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/sony.png" alt="Client Name"></a></div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="img/logos/yahoo.png" alt="Client Name"></a></div>
-				</div>
-			</div>
-	    </div>
-	    <!-- End Our Clients -->
-
 	    <!-- Footer -->
 	    <div class="footer">
 	    	<div class="container">
@@ -167,7 +135,7 @@
 		    			<h3>Our Latest Work</h3>
 		    			<div class="portfolio-item">
 							<div class="portfolio-image">
-								<a href="page-portfolio-item.html"><img src="img/portfolio6.jpg" alt="Project Name"></a>
+								<a href="page-portfolio-item.html"><img src="{{ asset('front-end/img/portfolio6.jpg') }}" alt="Project Name"></a>
 							</div>
 						</div>
 		    		</div>

@@ -41,4 +41,6 @@ class Common
     const PAGINATE_HOME = 5;
 
     const GUARD_ADMIN = "admin";
+
+    const PAGINATE_BANNER = 10;
 }
