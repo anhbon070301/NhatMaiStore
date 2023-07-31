@@ -21,7 +21,7 @@ class AdminRepository extends BaseRepository implements AdminRepositoryInterface
      * @param array $conditions
      * @return array
      */
-    public function list(array $conditions)
+    public function list(array $conditions, int $paginate = Common::PAGINATE_BE)
     {
         $this->applyConditions(condition($conditions));
         return $this->model

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController as HomeControllerFE;
+use App\Http\Controllers\Web\ProductController as WebProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -102,7 +103,7 @@ Route::get('forget-password', [App\Http\Controllers\Auth\ForgotPasswordControlle
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeControllerFE::class, 'index'])->name('web.home');
 
-    Route::get('/product', function() {
-        return view('web.product');
-    })->name('web.product');
+    Route::get('/product', [WebProductController::class, 'index'])->name('web.product');
+
+    Route::get('/product/detail/{id}', [WebProductController::class, 'show'])->name('web.product.detail');
 });
