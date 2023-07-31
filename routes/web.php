@@ -102,10 +102,6 @@ Route::get('forget-password', [App\Http\Controllers\Auth\ForgotPasswordControlle
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeControllerFE::class, 'index'])->name('web.home');
 
-    Route::get('/home', function() {
-        return view('web.home');
-    })->name('web.home');
-
     Route::get('/product', function() {
         return view('web.product');
     })->name('web.product');

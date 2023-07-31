@@ -16,12 +16,12 @@ class ProductReponsitory extends BaseRepository implements ProductReponsitoryInt
         return Product::class;
     }
 
-    public function listProduct(array $conditions)
+    public function listProduct(array $conditions, int $paginate = Common::PAGINATE_BE)
     {
         $this->applyConditions(condition($conditions));
         return $this->model
                     ->orderBy('sort_order', 'ASC')
-                    ->paginate(Common::PAGINATE_BE);
+                    ->paginate($paginate);
     }
 
     /**
@@ -35,13 +35,5 @@ class ProductReponsitory extends BaseRepository implements ProductReponsitoryInt
                     ->select('id', 'name', 'amount')
                     ->orderBy('amount','DESC')
                     ->paginate(Common::PAGINATE_HOME);
-    }
-
-    public function getProductFE(array $conditions)
-    {
-        $this->applyConditions(condition($conditions));
-        return $this->model
-                    ->orderBy('sort_order', 'ASC')
-                    ->paginate(Common::PAGINATE_FE);
     }
 }

@@ -189,13 +189,13 @@
                     <!-- Basic Pagination -->
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="{{$products->previousPageUrl()}}">
+                            <li class="page-item"><a class="page-link" href="{{ $products->appends(request()->except('page'))->previousPageUrl() }}">
                                     << </a>
                             </li>
                             @foreach($products->links()->getData()["elements"][0] as $key => $item)
                             <li class="page-item"><a class="page-link" href="{{$item}}">{{$key}}</a></li>
                             @endforeach
-                            <li class="page-item"><a class="page-link" href="{{$products->nextPageUrl()}}">>></a></li>
+                            <li class="page-item"><a class="page-link" href="{{ $products->appends(request()->except('page'))->nextPageUrl() }}">>></a></li>
                         </ul>
                     </nav><!-- End Basic Pagination -->
                 </div>

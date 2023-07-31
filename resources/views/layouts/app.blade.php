@@ -43,7 +43,10 @@
 					<ul>
 						<li class="logo-wrapper"><a href="index.html"><img src="{{ asset('front-end/img/mPurpose-logo.png') }}" alt="Multipurpose Twitter Bootstrap Template"></a></li>
 						<li  class="{{(Route::currentRouteName() == 'web.home') ? 'active' : ''}}">
-							<a href="index.html">Home</a>
+							<a href="{{ route('web.home') }}">Home</a>
+						</li>
+						<li  class="{{(Route::currentRouteName() == 'web.product') ? 'active' : ''}}">
+							<a href="{{ route('web.product') }}">Product</a>
 						</li>
 						<li>
 							<a href="features.html">Features</a>

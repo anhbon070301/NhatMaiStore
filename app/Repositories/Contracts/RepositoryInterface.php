@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Constants\Common;
+
 interface RepositoryInterface extends \Prettus\Repository\Contracts\RepositoryInterface
 {
     public function findWhereForUpdate(array $conditions, $columns = ['*']);
@@ -16,7 +18,7 @@ interface RepositoryInterface extends \Prettus\Repository\Contracts\RepositoryIn
 
     public function updateByWhere(array $conditions, array $value);
 
-    public function list(array $conditions);
+    public function list(array $conditions, int $paginate = Common::PAGINATE_BE);
 
     public function updateActive(int $id, array $attribute); 
 

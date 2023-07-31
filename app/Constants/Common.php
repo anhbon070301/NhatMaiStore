@@ -43,4 +43,6 @@ class Common
     const GUARD_ADMIN = "admin";
 
     const PAGINATE_BANNER = 10;
+
+    const PRICE = 100;
 }

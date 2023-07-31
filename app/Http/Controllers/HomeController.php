@@ -42,7 +42,7 @@ class HomeController extends Controller
             ["active", "=", Common::ACTIVE]
         ]);
         $discountProduct = $this->productServiceInterface->getProductFE([
-            ["old_price", "<>", null],
+            ["price", "<", Common::PRICE],
             ["active", "=", Common::ACTIVE]
         ]);
         $brands = $this->brandServiceInterface->list([]);

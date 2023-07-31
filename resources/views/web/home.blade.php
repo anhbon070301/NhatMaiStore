@@ -47,14 +47,6 @@
                         <div class="title">
                             <h3><a href="page-product-details.html">{{$item->name ?? ''}}</a></h3>
                         </div>
-                        <!-- Product Available Colors-->
-                        <div class="colors">
-                            <span class="color-white"></span>
-                            <span class="color-black"></span>
-                            <span class="color-blue"></span>
-                            <span class="color-orange"></span>
-                            <span class="color-green"></span>
-                        </div>
                         <!-- Product Price-->
                         <div class="price">
                             ${{ number_format($item->price ?? 0)}}
@@ -75,7 +67,7 @@
     <!-- Discount -->
     <div class="section">
         <div class="container">
-            <h2>Discount</h2>
+            <h2>Low price</h2>
             <div class="row">
                 @foreach ($discountProduct as $item)
                 <div class="col-md-3 col-sm-6">
@@ -88,14 +80,6 @@
                         <!-- Product Title -->
                         <div class="title">
                             <h3><a href="page-product-details.html">{{$item->name ?? ""}}</a></h3>
-                        </div>
-                        <!-- Product Available Colors-->
-                        <div class="colors">
-                            <span class="color-white"></span>
-                            <span class="color-black"></span>
-                            <span class="color-blue"></span>
-                            <span class="color-orange"></span>
-                            <span class="color-green"></span>
                         </div>
                         <!-- Product Price-->
                         <div class="price">

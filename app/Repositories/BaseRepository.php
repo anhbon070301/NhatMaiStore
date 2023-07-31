@@ -211,12 +211,12 @@ abstract class BaseRepository extends L5Repository implements RepositoryInterfac
      * @param array $conditions
      * @return array
      */
-    public function list(array $conditions)
+    public function list(array $conditions, int $paginate = Common::PAGINATE_BE)
     {
         $this->applyConditions(condition($conditions));
         return $this->model
                     ->orderBy('sort_order', 'ASC')
-                    ->paginate(Common::PAGINATE_BE);
+                    ->paginate($paginate);
     }
 
     public function updateActive(int $id, array $attribute) 

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\Common;
 use App\Repositories\Contracts\ProductReponsitoryInterface;
 use App\Services\Contracts\ProductServiceInterface;
 use Illuminate\Support\Arr;
@@ -113,6 +114,6 @@ class ProductService implements ProductServiceInterface
 
     public function getProductFE(array $conditions)
     {
-        return $this->productReponsitory->getProductFE($conditions);
+        return $this->productReponsitory->listProduct($conditions, Common::PAGINATE_FE);
     }
 }
