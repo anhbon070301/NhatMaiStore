@@ -113,3 +113,19 @@
 
 </section> <!-- End Section -->
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var user_id = '{{auth()->user()->id ?? ""}}';
+        var cart = JSON.parse(localStorage.getItem('cart')) ?? [];
+        if (cart.length > 0) {
+            cart.map(x => {
+                x['user_id'] =  parseInt(user_id);
+                console.log(x['user_id']);
+            });
+            localStorage.removeItem("cart");
+            localStorage.setItem('cart_login', JSON.stringify(cart));
+        } 
+        console.log(JSON.parse(localStorage.getItem('cart_login')));
+    });
+</script>

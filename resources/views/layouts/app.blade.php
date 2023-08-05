@@ -39,6 +39,16 @@
 					<ul>
 						<li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="page-shopping-cart.html"><b>3 items</b></a></li>
 						<li><a href="page-login.html">Login</a></li>
+						<li class="nav-item">
+							<a class="nav-link collapsed" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+								<i class="bi bi-box-arrow-in-right"></i>
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+									@csrf
+								</form>
+								<span>Logout</span>
+							</a>
+						</li><!-- End Login Page Nav -->
 					</ul>
 				</div>
 			</div>
