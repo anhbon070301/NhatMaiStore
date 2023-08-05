@@ -11,13 +11,16 @@
                         <a href="{{route('web.product.detail', $item->id)}}"><img src="{{ asset('images/'.$item->image_url) }}" alt="Item Name"></a>
                     </div>
                     <div class="title">
-                        <h3><a href="page-product-details.html">{{$item->name}}</a></h3>
+                        <h3><a href="{{route('web.product.detail', $item->id)}}">{{$item->name}}</a></h3>
                     </div>
                     <div class="price">
                         ${{number_format($item->price)}}
                     </div>
                     <div class="actions">
-                        <a href="page-product-details.html" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add</a>
+                        <a class="btn btn-small add-cart" data-id="{{$item->id}}" 
+                            data-name="{{$item->name}}" data-price="{{$item->price}}" data-image="{{$item->image_url}}">
+                            <i class="icon-shopping-cart icon-white"></i> Add
+                        </a>
                     </div>
                 </div>
             </div>
@@ -35,3 +38,33 @@
     </div>
 </div>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.add-cart').on('click', function(){
+            var cart = JSON.parse(localStorage.getItem('cart')) ?? [];
+            var productId = $(this).data("id");
+            var productName = $(this).data("name");
+            var productPrice = $(this).data("price");
+            var productImage = $(this).data("image");
+            var amount = $('#amount').val() ?? 1;
+            var filter = cart.filter(x => x['id'] == productId);
+            if(filter.length == 0) {
+                cart.push({
+                    'id': productId,
+                    'name': productName,
+                    'price': productPrice,
+                    'amount': amount,
+                    'image': productImage
+                });
+            } else {
+                filter.map(x => {
+                    x['amount'] = x['amount'] + parseInt(amount);
+                });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            console.log(JSON.parse(localStorage.getItem('cart')));
+        });
+    });
+</script>
