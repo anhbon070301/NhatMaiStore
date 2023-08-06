@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController as HomeControllerFE;
+use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ProductController as WebProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -107,3 +108,7 @@ Route::prefix('/')->group(function () {
 
     Route::get('/product/detail/{id}', [WebProductController::class, 'show'])->name('web.product.detail');
 });
+
+Route::get('cart/add', [CartController::class, 'store']);
+
+Route::get('cart/get/{id}', [CartController::class, 'index']);

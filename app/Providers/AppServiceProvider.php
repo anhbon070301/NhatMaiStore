@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Services\BannerService;
 use App\Services\BrandService;
+use App\Services\CartService;
 use App\Services\CategoryService;
 use App\Services\Contracts\BannerServiceInterface;
 use App\Services\Contracts\BrandServiceInterface;
+use App\Services\Contracts\CartServiceInterface;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\Contracts\ImageServiceInterface;
 use App\Services\Contracts\OrderServiceInterface;
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
         $this->app->bind(ReportServiceInterface::class, ReportService::class);
+        $this->app->bind(CartServiceInterface::class, CartService::class);
     }
 
     /**
