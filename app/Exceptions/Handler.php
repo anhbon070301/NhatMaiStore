@@ -6,6 +6,7 @@ use App\Http\Controllers\Traits\ApiResponse;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -63,25 +64,44 @@ class Handler extends ExceptionHandler
      *
      * @param Request $request
      * @param Throwable $exception
-     * @return Response|JsonResponse
+     * @return Response|JsonResponse|RedirectResponse
      *
      * @throws Throwable
      */
-    public function render($request, Throwable $exception): Response|JsonResponse
+    public function render($request, Throwable $exception): Response|JsonResponse|RedirectResponse 
+    {
+        if ($request->is('api/*')) {
+            return $this->apiHandleException($exception);
+        }
+        return parent::render($request, $exception);
+    }
+
+    /**
+     * @param $exception
+     * @return JsonResponse
+     */
+    private function apiHandleException($exception): JsonResponse
     {
         if ($exception instanceof MethodNotAllowedHttpException) {
-            return $this->fail($exception->getMessage(), ResponseAlias::HTTP_METHOD_NOT_ALLOWED);
-        } else if ($exception instanceof ValidationException) {
-            $errors = $exception->errors();
-            $error = collect($errors)->first();
+            $response = $this->fail(
+                $exception->getMessage(),
+                ResponseAlias::HTTP_METHOD_NOT_ALLOWED
+            );
+        } elseif ($exception instanceof ValidationException) {
+            $errors   = $exception->errors();
+            $error    = collect($errors)->first();
             $errorStr = $error ? $error[0] : '';
-            return $this->fail($errorStr, ResponseAlias::HTTP_BAD_REQUEST);
-        } else if ($exception instanceof NotFoundHttpException) {
-            return $this->fail('Request not found', ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
-        } elseif ($exception instanceof CartException) {
-            return $this->fail('Cart lỗi', ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
+            $response = $this->fail($errorStr);
+        } elseif ($exception instanceof NotFoundHttpException) {
+            $response = $this->fail(
+                'Request not found',
+                ResponseAlias::HTTP_INTERNAL_SERVER_ERROR
+            );
+        } else {
+            Log::info('[RENDER EXCEPTION] - ' . $exception->getMessage());
+            $response = $this->fail($exception->getMessage());
         }
-        Log::info('[RENDER EXCEPTION] - '.$exception->getMessage());
-        return $this->fail($exception->getMessage());
+
+        return $response;
     }
 }
