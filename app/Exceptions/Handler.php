@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
      *
      * @throws Throwable
      */
-    public function render($request, Throwable $exception): Response|JsonResponse|RedirectResponse 
+    public function render($request, Throwable $exception)
     {
         if ($request->is('api/*')) {
             return $this->apiHandleException($exception);
@@ -93,6 +93,11 @@ class Handler extends ExceptionHandler
             $errorStr = $error ? $error[0] : '';
             $response = $this->fail($errorStr);
         } elseif ($exception instanceof NotFoundHttpException) {
+            $response = $this->fail(
+                'Request not found',
+                ResponseAlias::HTTP_INTERNAL_SERVER_ERROR
+            );
+        } elseif ($exception instanceof CartException) {
             $response = $this->fail(
                 'Request not found',
                 ResponseAlias::HTTP_INTERNAL_SERVER_ERROR

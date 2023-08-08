@@ -108,7 +108,3 @@ Route::prefix('/')->group(function () {
 
     Route::get('/product/detail/{id}', [WebProductController::class, 'show'])->name('web.product.detail');
 });
-
-Route::get('cart/add', [CartController::class, 'store']);
-
-Route::get('cart/get/{id}', [CartController::class, 'index']);
