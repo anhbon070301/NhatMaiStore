@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class ParentRule implements Rule
 {
+    private $id = null;
+
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
+
     /**
      * Determine if the validation rule passes.
      *
@@ -17,6 +24,11 @@ class ParentRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        if((int)$value == $this->id)
+        {
+            return false;
+        }
+
         $condition = [
             'id'         => (int)$value,
             'active'     => Common::ACTIVE,
