@@ -22,15 +22,13 @@ class CartController extends Controller
 
     public function index($id)
     {
-        dd(Session::get('test'));
-
-        return $this->apiResponse($this->cartServiceInterface->list($id));
+        $carts = $this->cartServiceInterface->list($id);
+        return view('web.cart', compact('carts'));
     }
 
     public function store(Request $request)
     {
-        Session::push('test', '11111');
-
-        return $this->handleResponse($this->cartServiceInterface->create($request->all())->toArray());
+        $this->cartServiceInterface->create($request->all());
+        // return redirect()->route('cart', auth()->user()->id ?? 0);
     }
 }

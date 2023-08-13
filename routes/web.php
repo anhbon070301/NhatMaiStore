@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController as HomeControllerFE;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ProductController as WebProductController;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -108,3 +109,11 @@ Route::prefix('/')->group(function () {
 
     Route::get('/product/detail/{id}', [WebProductController::class, 'show'])->name('web.product.detail');
 });
+
+Route::post('cart/create', [CartController::class, 'store'])->name('cart.create');
+
+Route::get('cart/{id}', [CartController::class, 'index'])->name('cart');
+
+Route::get('cart/destroy', function() {
+    Cart::destroy();
+})->name('cart.destroy');

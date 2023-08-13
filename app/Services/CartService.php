@@ -8,6 +8,7 @@ use App\Repositories\Contracts\ProductReponsitoryInterface;
 use App\Services\Contracts\CartServiceInterface;
 use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Session;
 
 class CartService implements CartServiceInterface
 {
@@ -20,8 +21,7 @@ class CartService implements CartServiceInterface
     public function __construct(
         BannerRepositoryInterface    $bannerRepository,
         ProductReponsitoryInterface  $productReponsitoryInterface
-    )
-    {
+    ) {
         $this->bannerRepository = $bannerRepository;
         $this->productReponsitoryInterface = $productReponsitoryInterface;
     }
@@ -32,8 +32,9 @@ class CartService implements CartServiceInterface
      */
     public function list(int $id)
     {
-        $collect = collect(Cart::content()->toArray());
-        $result  = $collect->values()->toArray();
+        // $carts = Session::get('cart-' . auth()->user()->id ?? 0);
+        
+        dd(Session::get('cart-' . auth()->user()->id ?? 0));
         return $result;
     }
 
@@ -43,29 +44,49 @@ class CartService implements CartServiceInterface
      */
     public function create(array $attributes)
     {
-        // Cart::destroy();
+        Cart::destroy();
         $result = [];
         $product = $this->productReponsitoryInterface->find($attributes['product_id']);
         if ($product->amount < (int)$attributes['quantity']) {
             throw new CartException();
         } else {
-            $dataCart = [
-                'id'      => (int)$attributes['product_id'],
-                'qty'     => (int)$attributes['quantity'],
-                'name'    => $attributes['product_name'],
-                'price'   => $attributes['product_price'],
-                'weight'  => '12',
-                'options' => ['image' => $attributes['product_image']]
-            ];
+            $carts = Session::get('cart-' . auth()->user()->id ?? 0);
+            $cartFilter = array_filter($carts, function($item) use ($attributes) {
+                return (int)$item['id'] === (int)$attributes['product_id'];
+            });
+
+            if (count($cartFilter) === 0) {
+                $dataCart = [
+                    'id'      => (int)$attributes['product_id'],
+                    'user_id' => (int)$attributes['user_id'],
+                    'qty'     => (int)$attributes['quantity'],
+                    'name'    => $attributes['product_name'],
+                    'price'   => $attributes['product_price'],
+                    'weight'  => '12',
+                    'options' => [
+                        'image' => $attributes['product_image'],
+                    ],
+                ];
+    
+                Session::push('cart-' . auth()->user()->id ?? '', $dataCart);
+            } else {
+                $cartUpdate = array_map(function ($item) use ($attributes) {
+                    if ((int)$item['id'] === (int)$attributes['product_id']) {
+                        (int)$item['qty'] +=  (int)$attributes['quantity'];
+                    }
+                    return $item;
+                }, $carts);
+                Session::put('cart-' . auth()->user()->id ?? 0, $cartUpdate);
+            }
 
             $newAmount = $product->amount - $attributes['quantity'];
 
-            $product->update(['amount' => $newAmount]);
-
-            $result = Cart::add($dataCart);
+            $result = $product->update(['amount' => $newAmount]);
         }
 
-        return $result;
+        return [
+            $result
+        ];
     }
 
     /**
@@ -104,7 +125,7 @@ class CartService implements CartServiceInterface
         return $this->bannerRepository->find($id);
     }
 
-    public function updateActive(array $attribute) 
+    public function updateActive(array $attribute)
     {
         $value = [
             "active" => $attribute['status']

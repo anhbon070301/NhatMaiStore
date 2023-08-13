@@ -25,8 +25,3 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('refresh', [LoginController::class, 'refresh']);
 Route::get('listUser', [LoginController::class, 'listUser'])->middleware('jwt.auth');
 Route::get('list', [ExampleController::class, 'index']);
-
-Route::get('cart/add', [CartController::class, 'store']);
-
-Route::get('cart/get/{id}', [CartController::class, 'index']);
-

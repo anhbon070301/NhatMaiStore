@@ -38,7 +38,7 @@
 				<div class="extras">
 					<ul>
 						<li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="page-shopping-cart.html"><b>3 items</b></a></li>
-						<li><a href="page-login.html">Login</a></li>
+						<li><a href="{{ route('login') }}">Login</a></li>
 						<li class="nav-item">
 							<a class="nav-link collapsed" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
