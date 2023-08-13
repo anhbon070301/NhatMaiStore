@@ -35,7 +35,7 @@ class CartService implements CartServiceInterface
         // $carts = Session::get('cart-' . auth()->user()->id ?? 0);
         
         dd(Session::get('cart-' . auth()->user()->id ?? 0));
-        return $result;
+        // return $result;
     }
 
     /**
