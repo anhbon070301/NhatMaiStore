@@ -113,33 +113,3 @@
     </div>
 </div>
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.add-cart').on('click', function(){
-            var cart = JSON.parse(localStorage.getItem('cart')) ?? [];
-            var productId = $(this).data("id");
-            var productName = $(this).data("name");
-            var productPrice = $(this).data("price");
-            var productImage = $(this).data("image");
-            var amount = parseInt($('#amount').val() ?? 1);
-            var filter = cart.filter(x => x['id'] == productId);
-            if(filter.length == 0) {
-                cart.push({
-                    'id': productId,
-                    'name': productName,
-                    'price': productPrice,
-                    'amount': amount,
-                    'image': productImage
-                });
-            } else {
-                filter.map(x => {
-                    x['amount'] = parseInt(x['amount']) + parseInt(amount);
-                });
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            console.log(JSON.parse(localStorage.getItem('cart')));
-        });
-    });
-</script>

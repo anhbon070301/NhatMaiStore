@@ -9,6 +9,7 @@ use App\Services\Contracts\CartServiceInterface;
 use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Session;
+use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 
 class CartService implements CartServiceInterface
 {
@@ -34,8 +35,8 @@ class CartService implements CartServiceInterface
     {
         // $carts = Session::get('cart-' . auth()->user()->id ?? 0);
         
-        dd(Session::get('cart-' . auth()->user()->id ?? 0));
-        // return $result;
+        // dd(Session::get('cart-' . auth()->user()->id ?? 0));
+        return Session::get('cart-' . auth()->user()->id ?? 0);
     }
 
     /**
@@ -45,12 +46,12 @@ class CartService implements CartServiceInterface
     public function create(array $attributes)
     {
         Cart::destroy();
-        $result = [];
+        $result = false;
         $product = $this->productReponsitoryInterface->find($attributes['product_id']);
         if ($product->amount < (int)$attributes['quantity']) {
             throw new CartException();
         } else {
-            $carts = Session::get('cart-' . auth()->user()->id ?? 0);
+            $carts = Session::get('cart-' . auth()->user()->id ?? 0) ?? [];
             $cartFilter = array_filter($carts, function($item) use ($attributes) {
                 return (int)$item['id'] === (int)$attributes['product_id'];
             });
@@ -58,7 +59,6 @@ class CartService implements CartServiceInterface
             if (count($cartFilter) === 0) {
                 $dataCart = [
                     'id'      => (int)$attributes['product_id'],
-                    'user_id' => (int)$attributes['user_id'],
                     'qty'     => (int)$attributes['quantity'],
                     'name'    => $attributes['product_name'],
                     'price'   => $attributes['product_price'],
@@ -81,11 +81,11 @@ class CartService implements CartServiceInterface
 
             $newAmount = $product->amount - $attributes['quantity'];
 
-            $result = $product->update(['amount' => $newAmount]);
+            $result = (boolean)$product->update(['amount' => $newAmount]);
         }
 
         return [
-            $result
+            'created' => $result
         ];
     }
 

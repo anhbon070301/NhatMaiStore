@@ -117,3 +117,7 @@ Route::get('cart/{id}', [CartController::class, 'index'])->name('cart');
 Route::get('cart/destroy', function() {
     Cart::destroy();
 })->name('cart.destroy');
+
+Route::get('/test', function() {
+    return response()->json(['message' => 'loi'], 404);
+});

@@ -21,11 +21,10 @@
                         <div class="actions">
                             <button class="btn btn-small add-cart"><i class="fa fa-shopping-cart"></i> Add to cart</button>
 
-                            <input type="hidden" value="{{ Auth::user()->id ? Auth::user()->id : 0 }}" name="user_id">
                             <input type="hidden" value="{{ $item->id }}" name="product_id">
                             <input type="hidden" value="1" name="quantity">
                             <input type="hidden" value="{{ $item->name }}" name="product_name">
-                            <input type="hidden" value="{{ $item->image }}" name="product_image">
+                            <input type="hidden" value="{{ $item->image_url }}" name="product_image">
                             <input type="hidden" value="{{ $item->price }}" name="product_price">
                         </div>
                     </div>
@@ -45,35 +44,3 @@
     </div>
 </div>
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.add-cart').on('click', function() {
-            var user_id = '{{auth()->user()->id ?? ""}}';
-            var cart = JSON.parse(localStorage.getItem('cart')) ?? [];
-            var productId = $(this).data("id");
-            var productName = $(this).data("name");
-            var productPrice = $(this).data("price");
-            var productImage = $(this).data("image");
-            var amount = parseInt($('#amount').val() ?? 1);
-            var filter = cart.filter(x => x['id'] == productId);
-            if (filter.length == 0) {
-                cart.push({
-                    'id': productId,
-                    'user_id': user_id,
-                    'name': productName,
-                    'price': productPrice,
-                    'amount': amount,
-                    'image': productImage
-                });
-            } else {
-                filter.map(x => {
-                    x['amount'] = parseInt(x['amount']) + parseInt(amount);
-                });
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            console.log(JSON.parse(localStorage.getItem('cart')));
-        });
-    });
-</script>
