@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="{{asset('front-end/css/main.css')}}">
 
 	<script src="{{asset('front-end/js/modernizr-2.6.2-respond-1.1.0.min.js')}}"></script>
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>

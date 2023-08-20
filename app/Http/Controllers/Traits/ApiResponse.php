@@ -144,4 +144,12 @@ trait ApiResponse
 
         return response()->json($response, $httpCode, $headers, $options);
     }
+
+    public function response(array $data = [], int $code = StatusCodeMessage::CODE_OK, string $message = "Success") {
+        return response()->json([
+            'code'    => $code,
+            'message' => $message,
+            'data'    => $data,
+        ], $code);
+    }
 }

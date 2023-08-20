@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController as HomeControllerFE;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ProductController as WebProductController;
+use App\Models\Province;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -114,10 +115,16 @@ Route::post('cart/create', [CartController::class, 'store'])->name('cart.create'
 
 Route::get('cart/{id}', [CartController::class, 'index'])->name('cart');
 
+Route::post('cart/update', [CartController::class, 'update'])->name('cart.update');
+
 Route::get('cart/destroy', function() {
     Cart::destroy();
 })->name('cart.destroy');
 
 Route::get('/test', function() {
     return response()->json(['message' => 'loi'], 404);
+});
+
+Route::get('/test2', function() {
+    return Province::where('id', '<', 10)->with('districts.wards')->get();
 });

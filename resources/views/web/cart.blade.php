@@ -23,6 +23,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <!-- Shopping Cart Items -->
@@ -38,7 +39,9 @@
                         </td>
                         <!-- Shopping Cart Item Quantity -->
                         <td class="quantity">
-                            <input class="form-control input-sm input-micro" type="text" value="{{ $value['qty'] ?? 0 }}">
+                            <!-- <input type="hidden" name="products[{{ $value['id'] }}][id]" value="{{ $value['id'] }}">
+                                <input class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" type="text" name="products[{{ $value['id'] }}][quantity]" value="{{ $value['qty'] }}"> -->
+                            <input id="cart-{{ $value['id'] }}" class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" data-name="{{ $value['name'] }}" data-image="{{ $value['options']['image'] }}" data-price="{{ $value['price'] }}" type="text" name="quantity" value="{{ $value['qty'] }}">
                         </td>
                         <!-- Shopping Cart Item Price -->
                         <td class="price">${{ $value['price'] ?? 0 }}</td>
@@ -69,7 +72,7 @@
                 </table>
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</a>
+                    <button id="update-cart" data-cart="{{ auth()->user()->id ?? 0 }}" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</button>
                     <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a>
                 </div>
             </div>
@@ -77,3 +80,85 @@
     </div>
 </div>
 @endsection
+<style>
+    /* Styles for the toast container */
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 4px;
+        opacity: 0;
+        transform: translateY(100%);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    /* Success toast style */
+    .toast.success {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    /* Error toast style */
+    .toast.error {
+        background-color: #f44336;
+        color: white;
+    }
+
+    /* Show the toast */
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js" integrity="sha512-8Z5++K1rB3U+USaLKG6oO8uWWBhdYsM3hmdirnOEWp8h2B1aOikj5zBzlXs8QOrvY9OxEnD2QDkbSKKpfqcIWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        $('#update-cart').on('click', function() {
+            const carts = $('.cart');
+            var cartData = [];
+            var cart_id = $(this).data('cart');
+
+            carts.each(function() {
+                cartData.push({
+                    id: $(this).data('id'),
+                    qty: $(this).val(),
+                    name: $(this).data('name'),
+                    price: $(this).data('price'),
+                    options: {
+                        image: $(this).data('image')
+                    },
+                });
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '{{ route("cart.update") }}',
+                method: 'POST',
+                data: {
+                    cart_id: cart_id,
+                    data: cartData,
+                },
+                success: function(response) {
+                    var successToast = '<div class="toast success">Cart has been updated successfully!</div>';
+                    $('.section').append(successToast);
+                    setTimeout(function() {
+                        successToast.remove();
+                    }, 3000);
+                },
+                error: function(xhr, text, err) {
+                    var errorToast = $('<div class="toast error">An error occurred. Please try again later.</div>');
+                    console.log('222222');
+                    $('.section').append(errorToast);
+                    setTimeout(function() {
+                        errorToast.remove();
+                    }, 3000);
+                }
+            });
+        });
+    });
+</script>

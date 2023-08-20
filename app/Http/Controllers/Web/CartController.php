@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Constants\StatusCodeMessage;
 use App\Http\Controllers\Controller;
 use App\Services\Contracts\CartServiceInterface;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Predis\Protocol\Text\Handler\StatusResponse;
 
 class CartController extends Controller
 {
@@ -29,6 +32,17 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $this->cartServiceInterface->create($request->all());
-        // return redirect()->route('cart', auth()->user()->id ?? 0);
+        return redirect()->route('cart', auth()->user()->id ?? 0);
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            $carts = $request->all();
+            $result = (boolean)$this->cartServiceInterface->update($carts['data'], $carts['cart_id']);
+            return $this->response([ 'updated' => $result ]);
+        } catch (Exception $e) {
+            return $this->response([ 'updated' => $result ], StatusCodeMessage::CODE_FAIL, $e->getMessage());
+        }
     }
 }

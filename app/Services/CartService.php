@@ -33,10 +33,7 @@ class CartService implements CartServiceInterface
      */
     public function list(int $id)
     {
-        // $carts = Session::get('cart-' . auth()->user()->id ?? 0);
-        
-        // dd(Session::get('cart-' . auth()->user()->id ?? 0));
-        return Session::get('cart-' . auth()->user()->id ?? 0);
+        return Session::get('cart-' . $id);
     }
 
     /**
@@ -47,11 +44,12 @@ class CartService implements CartServiceInterface
     {
         Cart::destroy();
         $result = false;
+        $user_id = auth()->user()->id ?? 0;
         $product = $this->productReponsitoryInterface->find($attributes['product_id']);
         if ($product->amount < (int)$attributes['quantity']) {
             throw new CartException();
         } else {
-            $carts = Session::get('cart-' . auth()->user()->id ?? 0) ?? [];
+            $carts = Session::get('cart-' . $user_id) ?? [];
             $cartFilter = array_filter($carts, function($item) use ($attributes) {
                 return (int)$item['id'] === (int)$attributes['product_id'];
             });
@@ -68,7 +66,7 @@ class CartService implements CartServiceInterface
                     ],
                 ];
     
-                Session::push('cart-' . auth()->user()->id ?? '', $dataCart);
+                Session::push('cart-' . $user_id, $dataCart);
             } else {
                 $cartUpdate = array_map(function ($item) use ($attributes) {
                     if ((int)$item['id'] === (int)$attributes['product_id']) {
@@ -76,7 +74,7 @@ class CartService implements CartServiceInterface
                     }
                     return $item;
                 }, $carts);
-                Session::put('cart-' . auth()->user()->id ?? 0, $cartUpdate);
+                Session::put('cart-' . $user_id, $cartUpdate);
             }
 
             $newAmount = $product->amount - $attributes['quantity'];
@@ -90,21 +88,18 @@ class CartService implements CartServiceInterface
     }
 
     /**
-     * @param array $attributes
+     * @param array $dataCart
      * @param int $id
      * @return mixed
      */
-    public function update(array $attributes, int $id)
+    public function update(array $dataCart, int $id)
     {
-        if (isset($attributes['image_url'])) {
-            $image = $attributes['image_url'];
-
-            $attributes['image_url'] = handleImage($image);
-        } else {
-            $attributes['image_url'] = $attributes['imageOld'];
+        try {
+            Session::put('cart-' . $id, $dataCart);
+            return true;
+        } catch (\Throwable $th) {
+            return false;
         }
-
-        return $this->bannerRepository->update($attributes, $id);
     }
 
     /**
