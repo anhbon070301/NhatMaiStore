@@ -41,7 +41,7 @@
                         <td class="quantity">
                             <!-- <input type="hidden" name="products[{{ $value['id'] }}][id]" value="{{ $value['id'] }}">
                                 <input class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" type="text" name="products[{{ $value['id'] }}][quantity]" value="{{ $value['qty'] }}"> -->
-                            <input id="cart-{{ $value['id'] }}" class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" data-name="{{ $value['name'] }}" data-image="{{ $value['options']['image'] }}" data-price="{{ $value['price'] }}" type="text" name="quantity" value="{{ $value['qty'] }}">
+                            <input id="cart-{{ $value['id'] }}" class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" data-name="{{ $value['name'] }}" data-image="{{ $value['options']['image'] }}" data-price="{{ $value['price'] }}" data-qty="{{ $value['qty'] }}" type="text" name="quantity" value="{{ $value['qty'] }}">
                         </td>
                         <!-- Shopping Cart Item Price -->
                         <td class="price">${{ $value['price'] ?? 0 }}</td>
@@ -116,9 +116,10 @@
 <script>
     $(document).ready(function() {
         $('#update-cart').on('click', function() {
-            const carts = $('.cart');
+            const carts  = $('.cart');
             var cartData = [];
-            var cart_id = $(this).data('cart');
+            var products = [];
+            var cart_id  = $(this).data('cart');
 
             carts.each(function() {
                 cartData.push({
@@ -130,6 +131,10 @@
                         image: $(this).data('image')
                     },
                 });
+                products.push({
+                    id: $(this).data('id'),
+                    qty: $(this).val() - $(this).data('qty'),
+                })
             });
             $.ajaxSetup({
                 headers: {
@@ -142,6 +147,7 @@
                 data: {
                     cart_id: cart_id,
                     data: cartData,
+                    products: products,
                 },
                 success: function(response) {
                     var successToast = '<div class="toast success">Cart has been updated successfully!</div>';

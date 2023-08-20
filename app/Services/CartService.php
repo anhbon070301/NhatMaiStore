@@ -8,6 +8,7 @@ use App\Repositories\Contracts\ProductReponsitoryInterface;
 use App\Services\Contracts\CartServiceInterface;
 use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 
@@ -92,12 +93,44 @@ class CartService implements CartServiceInterface
      * @param int $id
      * @return mixed
      */
-    public function update(array $dataCart, int $id)
+    public function update(array $request, int $id)
     {
+        $result = true;
+        DB::beginTransaction();
         try {
-            Session::put('cart-' . $id, $dataCart);
-            return true;
-        } catch (\Throwable $th) {
+            if (!empty($request['products'])) {
+                foreach ($request['products'] as $value) {
+                    $newAmount = 0;
+                    $product = $this->productReponsitoryInterface->find($value['id']);
+
+                    if (!empty($product)) {
+                        if ($product['amount'] < ($value['qty'])) {
+                            $result = false;
+                            throw new CartException();
+                        }
+
+                        $newAmount = $product['amount'] - ($value['qty']);
+
+                        $result = (boolean)$product->update(['amount' => $newAmount]);
+                    }
+
+                    if (!$result) {
+                        break;
+                    }
+                }
+            }
+
+            if (!$result) {
+                DB::rollBack();
+                return false;
+            } else {
+                DB::commit();
+                Session::put('cart-' . $id, $request['data']);
+                return true;
+            }
+        } catch (Exception $e) {
+            dd($e->getMessage());
+            DB::rollBack();
             return false;
         }
     }

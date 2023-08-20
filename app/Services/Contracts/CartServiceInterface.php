@@ -8,7 +8,7 @@ interface CartServiceInterface
 
     public function create(array $attributes);
 
-    public function update(array $attributes, int $id);
+    public function update(array $request, int $id);
 
     public function delete(int $id);
 

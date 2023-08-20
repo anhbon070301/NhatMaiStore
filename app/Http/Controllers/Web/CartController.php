@@ -39,7 +39,7 @@ class CartController extends Controller
     {
         try {
             $carts = $request->all();
-            $result = (boolean)$this->cartServiceInterface->update($carts['data'], $carts['cart_id']);
+            $result = (boolean)$this->cartServiceInterface->update($request->all(), $carts['cart_id']);
             return $this->response([ 'updated' => $result ]);
         } catch (Exception $e) {
             return $this->response([ 'updated' => $result ], StatusCodeMessage::CODE_FAIL, $e->getMessage());
