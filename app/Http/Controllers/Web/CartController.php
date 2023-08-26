@@ -37,12 +37,8 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
-        try {
-            $carts = $request->all();
-            $result = (boolean)$this->cartServiceInterface->update($request->all(), $carts['cart_id']);
-            return $this->response([ 'updated' => $result ]);
-        } catch (Exception $e) {
-            return $this->response([ 'updated' => $result ], StatusCodeMessage::CODE_FAIL, $e->getMessage());
-        }
+        $carts  = $request->all();
+        $result = $this->cartServiceInterface->update($request->all(), $carts['cart_id']);
+        return $this->response($result);
     }
 }

@@ -13,7 +13,6 @@ class CartException extends Exception
      */
     public function __construct(?string $message = '', Throwable $previous = null)
     {
-        $message = "Lỗi";
         parent::__construct($message, 401, $previous);
     }
 }

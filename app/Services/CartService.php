@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\StatusCodeMessage;
 use App\Exceptions\CartException;
 use App\Repositories\Contracts\BannerRepositoryInterface;
 use App\Repositories\Contracts\ProductReponsitoryInterface;
@@ -9,6 +10,7 @@ use App\Services\Contracts\CartServiceInterface;
 use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 
@@ -96,6 +98,9 @@ class CartService implements CartServiceInterface
     public function update(array $request, int $id)
     {
         $result = true;
+
+        $message = '';
+
         DB::beginTransaction();
         try {
             if (!empty($request['products'])) {
@@ -106,6 +111,7 @@ class CartService implements CartServiceInterface
                     if (!empty($product)) {
                         if ($product['amount'] < ($value['qty'])) {
                             $result = false;
+                            $message = StatusCodeMessage::getMessage(StatusCodeMessage::UPDATE_DATA_FAIL);
                             throw new CartException();
                         }
 
@@ -122,16 +128,22 @@ class CartService implements CartServiceInterface
 
             if (!$result) {
                 DB::rollBack();
-                return false;
+                $message = StatusCodeMessage::getMessage(StatusCodeMessage::CODE_FAIL);
+                throw new CartException();
             } else {
                 DB::commit();
                 Session::put('cart-' . $id, $request['data']);
-                return true;
+                $carts = Session::get('cart-'.$id);
+                return [
+                    'code'    => StatusCodeMessage::CODE_OK,
+                    'message' => StatusCodeMessage::getMessage(StatusCodeMessage::CODE_OK),
+                    'data'    => $carts ?? []
+                ];
             }
         } catch (Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
-            return false;
+            Log::error($e->getMessage());
+            throw new CartException($message);
         }
     }
 

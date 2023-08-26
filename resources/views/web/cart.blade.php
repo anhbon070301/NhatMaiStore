@@ -14,20 +14,12 @@
 
 <div class="section">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Action Buttons -->
-                <div class="pull-right">
-                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</a>
-                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-md-12">
                 <!-- Shopping Cart Items -->
                 <table class="shopping-cart">
+                    @if(!empty($carts))
                     @foreach ($carts as $value)
                     <!-- Shopping Cart Item -->
                     <tr>
@@ -40,7 +32,7 @@
                         <!-- Shopping Cart Item Quantity -->
                         <td class="quantity">
                             <!-- <input type="hidden" name="products[{{ $value['id'] }}][id]" value="{{ $value['id'] }}">
-                                <input class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" type="text" name="products[{{ $value['id'] }}][quantity]" value="{{ $value['qty'] }}"> -->
+                                    <input class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" type="text" name="products[{{ $value['id'] }}][quantity]" value="{{ $value['qty'] }}"> -->
                             <input id="cart-{{ $value['id'] }}" class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" data-name="{{ $value['name'] }}" data-image="{{ $value['options']['image'] }}" data-price="{{ $value['price'] }}" data-qty="{{ $value['qty'] }}" type="text" name="quantity" value="{{ $value['qty'] }}">
                         </td>
                         <!-- Shopping Cart Item Price -->
@@ -53,6 +45,7 @@
                     </tr>
                     <!-- End Shopping Cart Item -->
                     @endforeach
+                    @endif
                 </table>
                 <!-- End Shopping Cart Items -->
             </div>
@@ -82,49 +75,35 @@
 @endsection
 <style>
     /* Styles for the toast container */
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        border-radius: 4px;
-        opacity: 0;
-        transform: translateY(100%);
-        transition: opacity 0.3s, transform 0.3s;
-    }
-
-    /* Success toast style */
-    .toast.success {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    /* Error toast style */
-    .toast.error {
-        background-color: #f44336;
-        color: white;
-    }
-
-    /* Show the toast */
-    .toast.show {
-        opacity: 1;
-        transform: translateY(0);
+    button {
+        outline: 0 !important;
     }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js" integrity="sha512-8Z5++K1rB3U+USaLKG6oO8uWWBhdYsM3hmdirnOEWp8h2B1aOikj5zBzlXs8QOrvY9OxEnD2QDkbSKKpfqcIWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function() {
+        toastr.options = {
+            "positionClass": "toast-bottom-right",
+        };
+
+        function changeQuantity(carts) {
+            carts.each(function() {
+                var qty = $(this).val();
+                $(this).data('id', qty);
+            });
+        }
+
         $('#update-cart').on('click', function() {
-            const carts  = $('.cart');
+            const carts = $('.cart');
             var cartData = [];
             var products = [];
-            var cart_id  = $(this).data('cart');
+            var cart_id = $(this).data('cart');
 
             carts.each(function() {
                 cartData.push({
-                    id: $(this).data('id'),
-                    qty: $(this).val(),
+                    id: parseInt($(this).data('id')),
+                    qty: parseInt($(this).val()),
                     name: $(this).data('name'),
                     price: $(this).data('price'),
                     options: {
@@ -150,19 +129,25 @@
                     products: products,
                 },
                 success: function(response) {
-                    var successToast = '<div class="toast success">Cart has been updated successfully!</div>';
-                    $('.section').append(successToast);
+                    console.log(response.data.data);
+                    $.each(response.data.data, function(key, item) {
+                        $("#cart-" + item.id).data("qty", parseInt(item.qty));
+                    });
                     setTimeout(function() {
-                        successToast.remove();
-                    }, 3000);
+                        toastr.success('Cart updated successfully!', 'Success');
+
+                    }, 2000);
                 },
                 error: function(xhr, text, err) {
-                    var errorToast = $('<div class="toast error">An error occurred. Please try again later.</div>');
-                    console.log('222222');
-                    $('.section').append(errorToast);
+                    var responseData = JSON.parse(xhr.responseText);
+                    var errorMessage = responseData.message;
                     setTimeout(function() {
-                        errorToast.remove();
-                    }, 3000);
+                        toastr.error(errorMessage, 'Error');
+                    }, 2000);
+
+                    var inputElement = $("#cart-" + responseData.id);
+                    var previousQuantity = inputElement.data('qty');
+                    inputElement.val(previousQuantity);
                 }
             });
         });

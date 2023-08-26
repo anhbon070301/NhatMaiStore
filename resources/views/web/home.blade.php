@@ -30,6 +30,19 @@
     </div>
     <!-- End Homepage Slider -->
 
+    <!-- Our Brands -->
+    <div class="section">
+        <div class="container">
+            <h2>Brands</h2>
+            <div class="clients-logo-wrapper text-center row">
+                @foreach ($brands as $item)
+                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="{{ asset('images/'.$item->image_url ?? '') }}" alt="Client Name"></a></div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <!-- End Our Brands -->
+
     <!-- New Product -->
     <div class="section">
         <div class="container">
@@ -97,19 +110,6 @@
         </div>
     </div>
     <!-- End Discount -->
-
-    <!-- Our Clients -->
-    <div class="section">
-        <div class="container">
-            <h2>Our Clients</h2>
-            <div class="clients-logo-wrapper text-center row">
-                @foreach ($brands as $item)
-                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-6"><a href="#"><img src="{{ asset('images/'.$item->image_url ?? '') }}" alt="Client Name"></a></div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-    <!-- End Our Clients -->
 
 </section> <!-- End Section -->
 @endsection
