@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Constants\StatusCodeMessage;
 use App\Http\Controllers\Controller;
 use App\Services\Contracts\CartServiceInterface;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Predis\Protocol\Text\Handler\StatusResponse;
 
 class CartController extends Controller
 {

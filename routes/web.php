@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Product_imageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\HomeController as HomeControllerFE;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ProductController as WebProductController;
@@ -116,6 +117,8 @@ Route::post('cart/create', [CartController::class, 'store'])->name('cart.create'
 Route::get('cart/{id}', [CartController::class, 'index'])->name('cart');
 
 Route::post('cart/update', [CartController::class, 'update'])->name('cart.update');
+
+Route::get('/logout', [AuthLoginController::class, 'logout'])->name('logout');
 
 Route::get('cart/destroy', function() {
     Cart::destroy();

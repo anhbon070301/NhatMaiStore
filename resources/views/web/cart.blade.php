@@ -31,9 +31,9 @@
                         </td>
                         <!-- Shopping Cart Item Quantity -->
                         <td class="quantity">
-                            <!-- <input type="hidden" name="products[{{ $value['id'] }}][id]" value="{{ $value['id'] }}">
-                                    <input class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" type="text" name="products[{{ $value['id'] }}][quantity]" value="{{ $value['qty'] }}"> -->
-                            <input id="cart-{{ $value['id'] }}" class="form-control input-sm input-micro cart" data-id="{{ $value['id'] }}" data-name="{{ $value['name'] }}" data-image="{{ $value['options']['image'] }}" data-price="{{ $value['price'] }}" data-qty="{{ $value['qty'] }}" type="text" name="quantity" value="{{ $value['qty'] }}">
+                            <!-- <input type="hidden" name="products[{{ $value['product_id'] }}][id]" value="{{ $value['product_id'] }}">
+                                    <input class="form-control input-sm input-micro cart" data-id="{{ $value['product_id'] }}" type="text" name="products[{{ $value['product_id'] }}][quantity]" value="{{ $value['quantity'] }}"> -->
+                            <input id="cart-{{ $value['product_id'] }}" class="form-control input-sm input-micro cart" data-id="{{ $value['product_id'] }}" data-name="{{ $value['name'] }}" data-image="{{ $value['options']['image'] }}" data-price="{{ $value['price'] }}" data-qty="{{ $value['quantity'] }}" type="number" name="quantity" value="{{ $value['quantity'] }}">
                         </td>
                         <!-- Shopping Cart Item Price -->
                         <td class="price">${{ $value['price'] ?? 0 }}</td>
@@ -97,23 +97,18 @@
         $('#update-cart').on('click', function() {
             const carts = $('.cart');
             var cartData = [];
-            var products = [];
             var cart_id = $(this).data('cart');
 
             carts.each(function() {
                 cartData.push({
-                    id: parseInt($(this).data('id')),
-                    qty: parseInt($(this).val()),
+                    product_id: parseInt($(this).data('id')),
+                    quantity: parseInt($(this).val()),
                     name: $(this).data('name'),
                     price: $(this).data('price'),
                     options: {
                         image: $(this).data('image')
                     },
                 });
-                products.push({
-                    id: $(this).data('id'),
-                    qty: $(this).val() - $(this).data('qty'),
-                })
             });
             $.ajaxSetup({
                 headers: {
@@ -126,12 +121,11 @@
                 data: {
                     cart_id: cart_id,
                     data: cartData,
-                    products: products,
                 },
                 success: function(response) {
                     console.log(response.data.data);
                     $.each(response.data.data, function(key, item) {
-                        $("#cart-" + item.id).data("qty", parseInt(item.qty));
+                        $("#cart-" + item.product_id).data("qty", parseInt(item.qty));
                     });
                     setTimeout(function() {
                         toastr.success('Cart updated successfully!', 'Success');
