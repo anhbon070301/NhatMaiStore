@@ -50,9 +50,57 @@
                 <!-- End Shopping Cart Items -->
             </div>
         </div>
+        <hr>
         <div class="row">
+            <div class="col-md-4">
+                <form id="check-out-form" action="" method="post">
+                    <div class="cart-promo-code">
+                        <h6> Name</h6>
+                        <div>
+                            <input class="form-control input-sm" type="text" value="">
+                        </div>
+                    </div>
+                    <div class="cart-promo-code">
+                        <h6> Phone</h6>
+                        <div>
+                            <input class="form-control input-sm" type="text" value="">
+                        </div>
+                    </div>
+                    <div class="cart-shippment-options">
+                        <h6> Provinces</h6>
+                        <div class="input-append">
+                            <select id="provinces" name="provinces" class="form-control input-sm choose provinces">
+                                <option>---Select provinces---</option>
+                                @foreach ($provinces as $value)
+                                    <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="cart-shippment-options">
+                        <h6> Districts</h6>
+                        <div class="input-append">
+                            <select id="districts" name="districts" class="form-control input-sm choose districts">
+                                <option>---Select districts---</option>
+                                <option value="2">Next day delivery - $10.00</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="cart-shippment-options">
+                        <h6> Wards</h6>
+                        <div class="input-append">
+                            <select id="wards" name="wards" class="form-control input-sm wards">
+                                <option>---Select wards---</option>
+                                <option value="2">Next day delivery - $10.00</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn">Order</button>
+                </form>
+            </div>
             <!-- Shopping Cart Totals -->
-            <div class="col-md-4 col-md-offset-8 col-sm-6 col-sm-offset-6">
+            <div class="col-md-4 col-md-offset-4 col-sm-6">
                 <table class="cart-totals">
                     <tr>
                         <td><b>Shipping</b></td>
@@ -60,13 +108,13 @@
                     </tr>
                     <tr class="cart-grand-total">
                         <td><b>Total</b></td>
-                        <td><b>$163.55</b></td>
+                        <td><b id="total">$0</b></td>
                     </tr>
                 </table>
                 <!-- Action Buttons -->
                 <div class="pull-right">
                     <button id="update-cart" data-cart="{{ auth()->user()->id ?? 0 }}" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</button>
-                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a>
+                    <button id="check-out" data-status="0" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</button>
                 </div>
             </div>
         </div>
@@ -83,26 +131,42 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js" integrity="sha512-8Z5++K1rB3U+USaLKG6oO8uWWBhdYsM3hmdirnOEWp8h2B1aOikj5zBzlXs8QOrvY9OxEnD2QDkbSKKpfqcIWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function() {
+        $('#check-out-form').hide();
+        
         toastr.options = {
             "positionClass": "toast-bottom-right",
         };
 
-        function changeQuantity(carts) {
-            carts.each(function() {
-                var qty = $(this).val();
-                $(this).data('id', qty);
-            });
-        }
+        const carts = $('.cart');
+        var total = 0;
+
+        carts.each(function() {
+            total = total + (parseInt($(this).val()) * parseFloat($(this).data('price')));
+        });
+
+        $('#total').text(total);
+
+        $('#check-out').on('click', function(){
+            var status = $(this).data('status');
+
+            if (status == 0) {
+                $('#check-out-form').show();
+                $(this).data('status', 1);
+            } else {
+                $('#check-out-form').hide();
+                $(this).data('status', 0);
+            }
+        });
 
         $('#update-cart').on('click', function() {
-            const carts = $('.cart');
             var cartData = [];
             var cart_id = $(this).data('cart');
+            var totalNew = 0;
 
             carts.each(function() {
                 cartData.push({
-                    product_id: parseInt($(this).data('id')),
-                    quantity: parseInt($(this).val()),
+                    product_id: $(this).data('id'),
+                    quantity: $(this).val(),
                     name: $(this).data('name'),
                     price: $(this).data('price'),
                     options: {
@@ -110,11 +174,13 @@
                     },
                 });
             });
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             $.ajax({
                 url: '{{ route("cart.update") }}',
                 method: 'POST',
@@ -125,12 +191,14 @@
                 success: function(response) {
                     console.log(response.data.data);
                     $.each(response.data.data, function(key, item) {
-                        $("#cart-" + item.product_id).data("qty", parseInt(item.qty));
+                        $("#cart-" + item.product_id).data("qty", parseInt(item.quantity));
+                        totalNew = totalNew + (parseInt(item.quantity) * parseFloat(item.price));
                     });
                     setTimeout(function() {
                         toastr.success('Cart updated successfully!', 'Success');
 
                     }, 2000);
+                    $('#total').text(totalNew);
                 },
                 error: function(xhr, text, err) {
                     var responseData = JSON.parse(xhr.responseText);
@@ -143,6 +211,30 @@
                     var previousQuantity = inputElement.data('qty');
                     inputElement.val(previousQuantity);
                 }
+            });
+        });
+
+        $('.choose').on('change', function() {
+            var action = $(this).attr('id');
+            var id = $(this).val();
+            var _token = '{{ csrf_token() }}';
+            var result = "";
+            if (action == 'provinces') {
+                result = 'districts';
+            } else {
+                result = 'wards';
+            }
+            $.ajax({
+                url: "{{ route('select-delivery') }}",
+                method: 'POST',
+                data: {
+                    action: action,
+                    id: id,
+                    _token: _token
+                },
+                success: function(data) {
+                    $('#' + result).html(data);
+                },
             });
         });
     });

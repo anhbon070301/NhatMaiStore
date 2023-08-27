@@ -120,6 +120,8 @@ Route::post('cart/update', [CartController::class, 'update'])->name('cart.update
 
 Route::get('/logout', [AuthLoginController::class, 'logout'])->name('logout');
 
+Route::post('/select-delivery', [CartController::class, 'delivery'])->name('select-delivery');
+
 Route::get('cart/destroy', function() {
     Cart::destroy();
 })->name('cart.destroy');
