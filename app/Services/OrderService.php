@@ -23,8 +23,7 @@ class OrderService implements OrderServiceInterface
         OrderRepositoryInterface $orderRepositoryInterface,
         OrderItemsRepositoryInterface $orderItemsRepositoryInterface
 
-    )
-    {
+    ) {
         $this->orderItemsRepositoryInterface = $orderItemsRepositoryInterface;
         $this->orderRepository               = $orderRepositoryInterface;
     }
@@ -52,11 +51,52 @@ class OrderService implements OrderServiceInterface
     {
         DB::beginTransaction();
         try {
-            $order = $this->orderRepository->create($attributes);
+            $province  = DB::table('provinces')->find($attributes['provinces']);
+            $districts = DB::table('districts')->find($attributes['districts']);
+            $wards     = DB::table('wards')->find($attributes['wards']);
+
+            $attribute = [
+                'user_id'        => auth()->user()->id ?? null,
+                'customer_name'  => $attributes['customer_name'] ?? null,
+                'customer_phone' => $attributes['customer_phone'] ?? null,
+                'customer_email' => $attributes['customer_email'] ?? null,
+                'status'         => Common::IN_ACTIVE ?? 0,
+                'address'        => ($wards->name ?? '').' - '. ($districts->name ?? '') . ' - '. ($province->name ?? ''),
+                'total_money'    => array_reduce($attributes['total_money'], function ($carry, $item) {
+                    return $carry + $item;
+                }),
+                'total_products' => array_reduce($attributes['total_products'], function ($carry, $item) {
+                    return $carry + $item;
+                })
+            ];
+            
+            $order = $this->orderRepository->create($attribute);
+            $items = [];
             if ($order) {
-                
+                foreach ($attributes['items'] as $key => $value) {
+                   $items[] = [
+                     'order_id'         => $order->id,
+                     'product_id'       => $value['product_id'],
+                     'product_name'     => $value['product_name'],
+                     'product_image'    => $value['product_image'],
+                     'product_price'    => $value['product_price'],
+                     'product_quantity' => $value['product_quantity'],
+                   ];
+                }
+
+                $result = $this->orderItemsRepositoryInterface->insertOrUpdateBatch($items);
+
+                if ($result) {
+                    DB::commit();
+                    return $result;
+                } else {
+                    DB::rollBack();
+                    return null;
+                }
             }
         } catch (Exception $exception) {
+            dd($exception);
+            DB::rollBack();
             return null;
         }
     }
@@ -89,7 +129,7 @@ class OrderService implements OrderServiceInterface
         return $this->orderRepository->find($id);
     }
 
-    public function updateActive(array $attribute) 
+    public function updateActive(array $attribute)
     {
         $value = [
             "active" => $attribute['status']
@@ -98,26 +138,26 @@ class OrderService implements OrderServiceInterface
         return $this->orderRepository->updateActive($attribute['id'], $value);
     }
 
-    public function count() 
+    public function count()
     {
         $month = Carbon::now()->month;
         $result = DB::table("orders")
-                ->whereMonth('created_at', '=', 10)
-                ->whereYear('created_at', '=', 2022)
-                ->selectRaw('SUM(total_products) as total_products, SUM(total_money) as total_money')
-                ->get();
+            ->whereMonth('created_at', '=', 10)
+            ->whereYear('created_at', '=', 2022)
+            ->selectRaw('SUM(total_products) as total_products, SUM(total_money) as total_money')
+            ->get();
         return $result->first();
     }
 
     public function listItem()
     {
         $result = DB::table('order_items')
-                        ->groupBy('product_name')
-                        ->groupBy('product_id')
-                        ->groupBy('product_image')
-                        ->select('product_name', DB::raw('SUM(product_quantity) as total'))
-                        ->orderBy('total', 'desc')
-                        ->paginate(Common::PAGINATE_HOME);
+            ->groupBy('product_name')
+            ->groupBy('product_id')
+            ->groupBy('product_image')
+            ->select('product_name', DB::raw('SUM(product_quantity) as total'))
+            ->orderBy('total', 'desc')
+            ->paginate(Common::PAGINATE_HOME);
 
         return $result;
     }
@@ -129,9 +169,9 @@ class OrderService implements OrderServiceInterface
 
     public function showListItem(mixed $order)
     {
-       $result = DB::select("SELECT * FROM orders join order_items on orders.id = order_items.order_id WHERE orders.customer_email like '%" . $order->customer_email . "%' and orders.id =" . $order->id);
+        $result = DB::select("SELECT * FROM orders join order_items on orders.id = order_items.order_id WHERE orders.customer_email like '%" . $order->customer_email . "%' and orders.id =" . $order->id);
 
-       return $result;
+        return $result;
     }
 
     public function select_delivery(array $data)

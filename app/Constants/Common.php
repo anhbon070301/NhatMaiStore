@@ -24,6 +24,8 @@ class Common
 
     const ACTIVE = 1;
 
+    const IN_ACTIVE = 0;
+
     const DELETE = 2;
 
     const PAGINATE_BE = 10;

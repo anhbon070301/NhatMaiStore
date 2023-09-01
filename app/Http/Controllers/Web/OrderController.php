@@ -29,6 +29,6 @@ class OrderController extends Controller
 
     function store(Request $request)
     {
-        dd($request->all());
+        return $this->orderServiceInterface->create($request->all());
     }
 }

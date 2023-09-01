@@ -45,11 +45,13 @@
                                 <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-trash"></i></a>
                             </td>
                         </tr>
-                        <input type="text" name="items[{{ $key }}]['product_id']" value="{{ $value['product_id'] ?? '' }}">
-                        <input type="text" name="items[{{ $key }}]['name']" value="{{ $value['name'] ?? '' }}">
-                        <input type="text" name="items[{{ $key }}]['price']" value="{{ $value['price'] ?? '' }}">
-                        <input id="quantity-{{ $value['product_id'] ?? 0 }}" type="text" name="items[{{ $key }}]['quantity']" value="{{ $value['quantity'] ?? '' }}">
-                        <input type="text" name="items[{{ $key }}]['image']" value="{{ $value['options']['image'] }}">
+                        <input type="hidden" name="items[{{ $key }}][product_id]" value="{{ $value['product_id'] ?? '' }}">
+                        <input type="hidden" name="items[{{ $key }}][product_name]" value="{{ $value['name'] ?? '' }}">
+                        <input type="hidden" name="items[{{ $key }}][product_price]" value="{{ $value['price'] ?? '' }}">
+                        <input id="quantity-{{ $value['product_id'] ?? 0 }}" type="hidden" name="items[{{ $key }}][product_quantity]" value="{{ $value['quantity'] ?? '' }}">
+                        <input type="hidden" name="items[{{ $key }}][product_image]" value="{{ $value['options']['image'] }}">
+                        <input type="hidden" name="total_money[{{ $key }}]" value="{{ $value['price'] * $value['quantity'] }}">
+                        <input type="hidden" name="total_products[{{ $key }}]" value="{{ $value['quantity'] }}">
                         <!-- End Shopping Cart Item -->
                         @endforeach
                         @endif
@@ -64,13 +66,19 @@
                         <div class="cart-promo-code">
                             <h6> Name</h6>
                             <div>
-                                <input class="form-control input-sm" type="text" value="">
+                                <input class="form-control input-sm" name="customer_name" type="text" value="">
+                            </div>
+                        </div>
+                        <div class="cart-promo-code">
+                            <h6> Email</h6>
+                            <div>
+                                <input class="form-control input-sm" name="customer_email" type="text" value="">
                             </div>
                         </div>
                         <div class="cart-promo-code">
                             <h6> Phone</h6>
                             <div>
-                                <input class="form-control input-sm" type="text" value="">
+                                <input class="form-control input-sm" name="customer_phone" type="text" value="">
                             </div>
                         </div>
                         <div class="cart-shippment-options">

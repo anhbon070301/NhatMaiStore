@@ -108,7 +108,7 @@ Route::prefix('admin')->middleware('isAdmin')->group(function () {
 Route::get('forget-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
 
 Route::prefix('/')->group(function () {
-    Route::get('/', [HomeControllerFE::class, 'index'])->name('web.home')->middleware('count_requests');
+    Route::get('/', [HomeControllerFE::class, 'index'])->name('web.home');
 
     Route::get('/product', [WebProductController::class, 'index'])->name('web.product');
 
