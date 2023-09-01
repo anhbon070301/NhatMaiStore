@@ -3,22 +3,30 @@
 namespace App\Services;
 
 use App\Constants\Common;
+use App\Repositories\Contracts\OrderItemsRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Services\Contracts\OrderServiceInterface;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class OrderService implements OrderServiceInterface
 {
     protected $orderRepository;
+    protected $orderItemsRepositoryInterface;
 
     /**
      * @param OrderRepositoryInterface $orderRepositoryInterface
      */
-    public function __construct(OrderRepositoryInterface $orderRepositoryInterface)
+    public function __construct(
+        OrderRepositoryInterface $orderRepositoryInterface,
+        OrderItemsRepositoryInterface $orderItemsRepositoryInterface
+
+    )
     {
-        return $this->orderRepository = $orderRepositoryInterface;
+        $this->orderItemsRepositoryInterface = $orderItemsRepositoryInterface;
+        $this->orderRepository               = $orderRepositoryInterface;
     }
 
     /**
@@ -42,7 +50,15 @@ class OrderService implements OrderServiceInterface
      */
     public function create(array $attributes)
     {
-        return $this->orderRepository->create($attributes);
+        DB::beginTransaction();
+        try {
+            $order = $this->orderRepository->create($attributes);
+            if ($order) {
+                
+            }
+        } catch (Exception $exception) {
+            return null;
+        }
     }
 
     /**
