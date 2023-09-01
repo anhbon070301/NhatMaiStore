@@ -18,6 +18,7 @@ use App\Http\Controllers\Web\ProductController as WebProductController;
 use App\Models\Province;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -107,7 +108,7 @@ Route::prefix('admin')->middleware('isAdmin')->group(function () {
 Route::get('forget-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
 
 Route::prefix('/')->group(function () {
-    Route::get('/', [HomeControllerFE::class, 'index'])->name('web.home');
+    Route::get('/', [HomeControllerFE::class, 'index'])->name('web.home')->middleware('count_requests');
 
     Route::get('/product', [WebProductController::class, 'index'])->name('web.product');
 
@@ -122,7 +123,7 @@ Route::prefix('/')->group(function () {
     Route::post('order/store', [WebOrderController::class, 'store'])->name('order.store');
 });
 
-Route::get('/logout', [AuthLoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthLoginController::class, 'logout'])->name('user.logout');
 
 Route::post('/select-delivery', [CartController::class, 'delivery'])->name('select-delivery');
 
@@ -136,4 +137,8 @@ Route::get('/test', function () {
 
 Route::get('/test2', function () {
     return Province::where('id', '<', 10)->with('districts.wards')->get();
+});
+
+Route::get('/test3', function() {
+    dd(Redis::get('request_count'));
 });
