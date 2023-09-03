@@ -48,10 +48,8 @@
                         <input type="hidden" name="items[{{ $key }}][product_id]" value="{{ $value['product_id'] ?? '' }}">
                         <input type="hidden" name="items[{{ $key }}][product_name]" value="{{ $value['name'] ?? '' }}">
                         <input type="hidden" name="items[{{ $key }}][product_price]" value="{{ $value['price'] ?? '' }}">
-                        <input id="quantity-{{ $value['product_id'] ?? 0 }}" type="hidden" name="items[{{ $key }}][product_quantity]" value="{{ $value['quantity'] ?? '' }}">
+                        <input id="quantity-{{ ($value['product_id'] ?? 0) }}" type="hidden" name="items[{{ $key }}][product_quantity]" value="{{ $value['quantity'] ?? 0 }}">
                         <input type="hidden" name="items[{{ $key }}][product_image]" value="{{ $value['options']['image'] }}">
-                        <input type="hidden" name="total_money[{{ $key }}]" value="{{ $value['price'] * $value['quantity'] }}">
-                        <input type="hidden" name="total_products[{{ $key }}]" value="{{ $value['quantity'] }}">
                         <!-- End Shopping Cart Item -->
                         @endforeach
                         @endif
@@ -208,7 +206,8 @@
                     console.log(response.data.data);
                     $.each(response.data.data, function(key, item) {
                         $("#cart-" + item.product_id).data("qty", parseInt(item.quantity));
-                        $("#quantity-" + item.product_id).val(parseInt(item.quantity));
+                        $("#quantity-" + item.product_id).prop('value', parseInt(item.quantity));
+                        console.log($("#quantity-" + item.product_id).val());
                         totalNew = totalNew + (parseInt(item.quantity) * parseFloat(item.price));
                     });
                     setTimeout(function() {

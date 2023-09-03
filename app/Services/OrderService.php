@@ -10,6 +10,9 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class OrderService implements OrderServiceInterface
 {
@@ -62,11 +65,11 @@ class OrderService implements OrderServiceInterface
                 'customer_email' => $attributes['customer_email'] ?? null,
                 'status'         => Common::IN_ACTIVE ?? 0,
                 'address'        => ($wards->name ?? '').' - '. ($districts->name ?? '') . ' - '. ($province->name ?? ''),
-                'total_money'    => array_reduce($attributes['total_money'], function ($carry, $item) {
-                    return $carry + $item;
-                }),
-                'total_products' => array_reduce($attributes['total_products'], function ($carry, $item) {
-                    return $carry + $item;
+                'total_money'    => array_reduce($attributes['items'] ?? [], function ($carry, $item) {
+                    return $carry + ((int)$item["product_quantity"] * (float)$item["product_price"]);
+                }, 0),
+                'total_products' => array_reduce($attributes['items'] ?? [], function ($carry, $item) {
+                    return $carry + (int)$item["product_quantity"];
                 })
             ];
             
@@ -87,17 +90,22 @@ class OrderService implements OrderServiceInterface
                 $result = $this->orderItemsRepositoryInterface->insertOrUpdateBatch($items);
 
                 if ($result) {
+                    Mail::send('/error', ['customerName' => $attributes['customer_name'], 'totalMoney' => $attribute['total_money'],], function ($message) {
+                        $message->to('bonbon2k1a@gmail.com')->subject('Order');
+                    }, 'Bạn đã mua sản phẩm tại Shop');
+                    Session::forget('cart-'. (auth()->user()->id ?? 0));
                     DB::commit();
-                    return $result;
-                } else {
-                    DB::rollBack();
-                    return null;
-                }
+                    return $order;
+                } 
+                    
+                DB::rollBack();
+                return false;
             }
         } catch (Exception $exception) {
             dd($exception);
+            Log::error($exception->getMessage());
             DB::rollBack();
-            return null;
+            return false;
         }
     }
 

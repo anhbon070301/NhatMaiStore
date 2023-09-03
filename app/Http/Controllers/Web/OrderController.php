@@ -29,6 +29,10 @@ class OrderController extends Controller
 
     function store(Request $request)
     {
-        return $this->orderServiceInterface->create($request->all());
+        $result = $this->orderServiceInterface->create($request->all());
+        
+        if ($result) {
+            return redirect()->route('web.home');
+        }
     }
 }
