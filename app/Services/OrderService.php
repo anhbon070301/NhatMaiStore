@@ -41,7 +41,7 @@ class OrderService implements OrderServiceInterface
             ["customer_name", "LIKE",  Arr::get($attributes, "inputName")],
             ["customer_phone", "LIKE", Arr::get($attributes, "inputPhone")],
             ["customer_email", "LIKE", Arr::get($attributes, "inputEmail")],
-            ["status", '<>', Common::DELETE]
+            ["status", '<>', Common::PAID]
         ];
 
         return $this->orderItemsRepositoryInterface->list(condition($attributes));
