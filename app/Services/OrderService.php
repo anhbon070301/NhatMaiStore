@@ -41,9 +41,10 @@ class OrderService implements OrderServiceInterface
             ["customer_name", "LIKE",  Arr::get($attributes, "inputName")],
             ["customer_phone", "LIKE", Arr::get($attributes, "inputPhone")],
             ["customer_email", "LIKE", Arr::get($attributes, "inputEmail")],
+            ["status", '<>', Common::DELETE]
         ];
 
-        return $this->orderRepository->list(condition($attributes));
+        return $this->orderItemsRepositoryInterface->list(condition($attributes));
     }
 
     /**
@@ -114,9 +115,15 @@ class OrderService implements OrderServiceInterface
      * @param int $id
      * @return mixed
      */
-    public function update(array $attributes, int $id)
+    public function update(int $id)
     {
-        return $this->orderRepository->update($attributes, $id);
+        $order = $this->orderItemsRepositoryInterface->find($id);
+
+        if ($order) {
+            $order->update(["status" => ((int)$order->status ?? 0) + 1]);
+        }
+
+        return $order;
     }
 
     /**

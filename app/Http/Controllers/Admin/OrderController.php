@@ -42,17 +42,13 @@ class OrderController extends Controller
      */
     public function index(FilterOrderRequest $request)
     {
-        Session::put('data', $request->all());
-
         $orders = $this->orderServiceInterface->list($request->all());
 
         $categories = $this->categoryServiceInterface->getAll();
 
         $brands = $this->brandServiceInterface->getAll();
 
-        $itemOrder = Order_item::all();
-
-        return view('admin/order/show', compact('categories', 'brands', 'orders', 'itemOrder'));
+        return view('admin/order/show', compact('categories', 'brands', 'orders'));
     }
 
     /**
@@ -64,7 +60,7 @@ class OrderController extends Controller
      */
     public function update($id)
     {
-        $this->orderServiceInterface->update(["status" => Common::STATUS_ACTIVE], $id);
+        $this->orderServiceInterface->update($id);
 
         return redirect()->route('indexOrder');
     }

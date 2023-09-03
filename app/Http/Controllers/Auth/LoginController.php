@@ -47,8 +47,8 @@ class LoginController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ])) {
-            $cart      = Session::get('cart-0');
-            $cartLogin = Session::get('cart-' . auth()->user()->id);
+            $cart      = Session::get('cart-0') ?? [];
+            $cartLogin = Session::get('cart-' . auth()->user()->id) ?? [];
             $products  = array_merge($cart, $cartLogin);
 
             $aggregatedProducts = [];
