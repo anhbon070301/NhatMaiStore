@@ -21,6 +21,19 @@
         <section class="section dashboard">
             <div class="row">
 
+                <div id="message">
+                    @if (session()->has('message-update-order'))
+                    <div class="alert alert-danger">
+                        {{ session('message-update-order') }}
+                    </div>
+                    @endif
+                    @if (session()->has('message-update-order-success'))
+                    <div class="alert alert-success">
+                        {{ session('message-update-order-success') }}
+                    </div>
+                    @endif
+                </div>
+
                 <!-- Left side columns -->
                 <div class="col-lg-12">
                     <div class="row">
@@ -105,14 +118,19 @@
                                                 <td style="text-align: left;">
                                                     {{ $orderList->product_name ?? '' }}
                                                 </td>
-                                                @if($orderList->status == 0)
+                                                @if($orderList->status == App\Constants\Common::IN_ACTIVE)
                                                 <td>Unconfimred</td>
-                                                @else
+                                                @elseif ($orderList->status == App\Constants\Common::ACTIVE)
                                                 <td>Confirmed</td>
+                                                @else
+                                                <td>Paid</td>
                                                 @endif
                                                 <td>
-                                                    <a href="{{ route('showbyId', $orderList->id) }}" class="btn btn-primary"><i class="ri-eye-line"></i></a>
-                                                    <a class="btn btn-success" href="{{ route('updateOrder', $orderList->id) }}"><i class="bi bi-coin"></i></a>
+                                                    <form action="{{ route('updateOrder', $orderList->id) }}" method="post">
+                                                        @csrf
+                                                        <button class="btn btn-success" type="submit"><i class="bi bi-coin"></i></button>
+                                                        <a href="{{ route('showbyId', $orderList->id) }}" class="btn btn-primary"><i class="ri-eye-line"></i></a>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             @endforeach

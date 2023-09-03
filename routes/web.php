@@ -87,7 +87,7 @@ Route::prefix('admin')->middleware('isAdmin')->group(function () {
     //order
     Route::get('/order', [OrderController::class, 'index'])->name('indexOrder');
     Route::get('/order/show-by-id/{id}', [OrderController::class, 'showbyId'])->name('showbyId');
-    Route::get('/order/update/{id}', [OrderController::class, 'update'])->name('updateOrder');
+    Route::post('/order/update/{id}', [OrderController::class, 'update'])->name('updateOrder');
     Route::get('/order/export', [OrderController::class, 'export'])->name('exportOrder');
 
     //user

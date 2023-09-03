@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Constants\Common;
+use App\Exceptions\CartException;
 use App\Repositories\Contracts\OrderItemsRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
+use App\Repositories\Contracts\ProductReponsitoryInterface;
 use App\Services\Contracts\OrderServiceInterface;
 use Carbon\Carbon;
 use Exception;
@@ -18,17 +20,19 @@ class OrderService implements OrderServiceInterface
 {
     protected $orderRepository;
     protected $orderItemsRepositoryInterface;
+    protected $productReponsitoryInterface;
 
     /**
      * @param OrderRepositoryInterface $orderRepositoryInterface
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepositoryInterface,
-        OrderItemsRepositoryInterface $orderItemsRepositoryInterface
-
+        OrderRepositoryInterface      $orderRepositoryInterface,
+        OrderItemsRepositoryInterface $orderItemsRepositoryInterface,
+        ProductReponsitoryInterface   $productReponsitoryInterface
     ) {
         $this->orderItemsRepositoryInterface = $orderItemsRepositoryInterface;
         $this->orderRepository               = $orderRepositoryInterface;
+        $this->productReponsitoryInterface   = $productReponsitoryInterface;
     }
 
     /**
@@ -41,7 +45,6 @@ class OrderService implements OrderServiceInterface
             ["customer_name", "LIKE",  Arr::get($attributes, "inputName")],
             ["customer_phone", "LIKE", Arr::get($attributes, "inputPhone")],
             ["customer_email", "LIKE", Arr::get($attributes, "inputEmail")],
-            ["status", '<>', Common::PAID]
         ];
 
         return $this->orderItemsRepositoryInterface->list(condition($attributes));
@@ -65,7 +68,7 @@ class OrderService implements OrderServiceInterface
                 'customer_phone' => $attributes['customer_phone'] ?? null,
                 'customer_email' => $attributes['customer_email'] ?? null,
                 'status'         => Common::IN_ACTIVE ?? 0,
-                'address'        => ($wards->name ?? '').' - '. ($districts->name ?? '') . ' - '. ($province->name ?? ''),
+                'address'        => ($wards->name ?? '') . ' - ' . ($districts->name ?? '') . ' - ' . ($province->name ?? ''),
                 'total_money'    => array_reduce($attributes['items'] ?? [], function ($carry, $item) {
                     return $carry + ((int)$item["product_quantity"] * (float)$item["product_price"]);
                 }, 0),
@@ -73,19 +76,19 @@ class OrderService implements OrderServiceInterface
                     return $carry + (int)$item["product_quantity"];
                 })
             ];
-            
+
             $order = $this->orderRepository->create($attribute);
             $items = [];
             if ($order) {
                 foreach ($attributes['items'] as $key => $value) {
-                   $items[] = [
-                     'order_id'         => $order->id,
-                     'product_id'       => $value['product_id'],
-                     'product_name'     => $value['product_name'],
-                     'product_image'    => $value['product_image'],
-                     'product_price'    => $value['product_price'],
-                     'product_quantity' => $value['product_quantity'],
-                   ];
+                    $items[] = [
+                        'order_id'         => $order->id,
+                        'product_id'       => $value['product_id'],
+                        'product_name'     => $value['product_name'],
+                        'product_image'    => $value['product_image'],
+                        'product_price'    => $value['product_price'],
+                        'product_quantity' => $value['product_quantity'],
+                    ];
                 }
 
                 $result = $this->orderItemsRepositoryInterface->insertOrUpdateBatch($items);
@@ -94,16 +97,15 @@ class OrderService implements OrderServiceInterface
                     Mail::send('/error', ['customerName' => $attributes['customer_name'], 'totalMoney' => $attribute['total_money'],], function ($message) {
                         $message->to('bonbon2k1a@gmail.com')->subject('Order');
                     }, 'Bạn đã mua sản phẩm tại Shop');
-                    Session::forget('cart-'. (auth()->user()->id ?? 0));
+                    Session::forget('cart-' . (auth()->user()->id ?? 0));
                     DB::commit();
                     return $order;
-                } 
-                    
+                }
+
                 DB::rollBack();
                 return false;
             }
         } catch (Exception $exception) {
-            dd($exception);
             Log::error($exception->getMessage());
             DB::rollBack();
             return false;
@@ -117,13 +119,35 @@ class OrderService implements OrderServiceInterface
      */
     public function update(int $id)
     {
-        $order = $this->orderItemsRepositoryInterface->find($id);
+        DB::beginTransaction();
+        try {
+            $order = $this->orderItemsRepositoryInterface->find($id);
 
-        if ($order) {
-            $order->update(["status" => ((int)$order->status ?? 0) + 1]);
+            if ($order) {
+                $product = $this->productReponsitoryInterface->find($order->product_id);
+
+                if (!$product || isset($product->amount) && $order->product_quantity > $product->amount) {
+                    Log::error('Fail amount');
+                    return false;
+                }
+
+                $newAmount = $product->amount - $order->product_quantity;
+
+                if ($order->status == Common::IN_ACTIVE) {
+                    Log::info('Update product '. $newAmount);
+                    $product->update(['amount' => $newAmount]);
+                }
+
+                $order->update(["status" => ((int)$order->status ?? 0) + 1]);
+                DB::commit();
+            }
+
+            return $order;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            Log::error($ex->getMessage());
+            return false;
         }
-
-        return $order;
     }
 
     /**
@@ -141,7 +165,7 @@ class OrderService implements OrderServiceInterface
      */
     public function detail(int $id)
     {
-        return $this->orderRepository->find($id);
+        return $this->orderItemsRepositoryInterface->find($id);
     }
 
     public function updateActive(array $attribute)

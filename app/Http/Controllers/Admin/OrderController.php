@@ -60,7 +60,13 @@ class OrderController extends Controller
      */
     public function update($id)
     {
-        $this->orderServiceInterface->update($id);
+        $order = $this->orderServiceInterface->update($id);
+
+        if ($order) {
+            session()->flash('message-update-order-success', 'Order has been updated.');
+        } else {
+            session()->flash('message-update-order', 'Order has been updated fail.');
+        }
 
         return redirect()->route('indexOrder');
     }
@@ -77,7 +83,7 @@ class OrderController extends Controller
         $brands = $this->brandServiceInterface->getAll();
 
         $order = $this->orderServiceInterface->detail($id);
-        
+
         $itemOrder = $this->orderServiceInterface->showListItem($order);
 
         return view('admin/order/detail', compact('categories', 'brands', 'order', 'itemOrder'));
