@@ -126,7 +126,7 @@ class OrderService implements OrderServiceInterface
             if ($order) {
                 $product = $this->productReponsitoryInterface->find($order->product_id);
 
-                if (!$product || isset($product->amount) && $order->product_quantity > $product->amount) {
+                if (!$product || ($order->status == Common::IN_ACTIVE && isset($product->amount) && $order->product_quantity > $product->amount)) {
                     Log::error('Fail amount');
                     return false;
                 }

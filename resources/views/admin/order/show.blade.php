@@ -127,7 +127,7 @@
                                                     @endif
                                                 @endforeach
                                                 <td>
-                                                    @if (($orderList->status ?? 0) != App\Constants\Common::CANCEL)
+                                                    @if ((($orderList->status ?? 0) != App\Constants\Common::CANCEL) && (($orderList->status ?? 0) != App\Constants\Common::PAID))
                                                     <form action="{{ route('updateOrder', $orderList->id) }}" method="post">
                                                         @csrf
                                                         <button class="btn btn-success" type="submit"><i class="bi bi-coin"></i></button>
