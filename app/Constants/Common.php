@@ -30,6 +30,8 @@ class Common
 
     const PAID = 2;
 
+    const CANCEL = 3;
+
     const PAGINATE_BE = 10;
 
     const PAGINATE_FE = 12;
@@ -49,4 +51,11 @@ class Common
     const PAGINATE_BANNER = 10;
 
     const PRICE = 100;
+
+    const STATUS_ORDER = [
+        self::IN_ACTIVE => 'Unconfimred',
+        self::ACTIVE    => 'Confirmed',
+        self::PAID      => 'Paid',
+        self::CANCEL    => 'Cancel',
+    ];
 }

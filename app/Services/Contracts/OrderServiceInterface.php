@@ -25,4 +25,6 @@ interface OrderServiceInterface
     public function showListItem(mixed $order);
 
     public function select_delivery(array $data);
+
+    public function cancel(int $id);
 }

@@ -98,39 +98,49 @@
                                         <thead>
                                             <tr>
                                                 <th style="width:5%; text-align: center;">No</th>
-                                                <th style="width:15%; text-align: left;">Customer's name</th>
+                                                <th style="width:10%; text-align: left;">Customer's name</th>
                                                 <th style="width:10%; text-align: left;">Email</th>
                                                 <th style="width:5%; text-align: center;">Phone</th>
                                                 <th style="width:10%; text-align: center;">Total product</th>
                                                 <th style="width:15%; text-align: center;">Items</th>
-                                                <th style="width:10%; text-align: center;">Status</th>
-                                                <th style="width:30%; text-align: center;">Action</th>
+                                                <th style="width:5%; text-align: center;">Status</th>
+                                                <th style="width:35%; text-align: center;">Action</th>
+                                                <th style="width:5%; text-align: center;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($orders as $key => $orderList)
                                             <tr>
-                                                <td style="text-align: center;">{{ $key+1 }}</td>
-                                                <td style="text-align: left;">{{ $orderList['order']['customer_name'] ?? ''}}</td>
-                                                <td style="text-align: left;">{{ $orderList->order->customer_email ?? '' }}</td>
-                                                <td style="text-align: center;">{{ $orderList->order->customer_phone ?? '' }}</td>
-                                                <td style="text-align: right;">{{ number_format($orderList->product_quantity ?? 0) }}</td>
+                                                <td style="text-align: center;"><a class="color-text" href="{{ route('showbyId', $orderList->id) }}">{{ $key+1 }} </a></td>
+                                                <td style="text-align: left;"><a class="color-text" href="{{ route('showbyId', $orderList->id) }}">{{ $orderList['order']['customer_name'] ?? ''}}</a></td>
+                                                <td style="text-align: left;"><a class="color-text" href="{{ route('showbyId', $orderList->id) }}">{{ $orderList->order->customer_email ?? '' }}</a></td>
+                                                <td style="text-align: center;"><a class="color-text" href="{{ route('showbyId', $orderList->id) }}">{{ $orderList->order->customer_phone ?? '' }}</a></td>
+                                                <td style="text-align: right;"><a class="color-text" href="{{ route('showbyId', $orderList->id) }}">{{ number_format($orderList->product_quantity ?? 0) }}</a></td>
                                                 <td style="text-align: left;">
-                                                    {{ $orderList->product_name ?? '' }}
+                                                    <a class="color-text" href="{{ route('showbyId', $orderList->id) }}">
+                                                        {{ $orderList->product_name ?? '' }}
+                                                    </a>
                                                 </td>
-                                                @if($orderList->status == App\Constants\Common::IN_ACTIVE)
-                                                <td>Unconfimred</td>
-                                                @elseif ($orderList->status == App\Constants\Common::ACTIVE)
-                                                <td>Confirmed</td>
-                                                @else
-                                                <td>Paid</td>
-                                                @endif
+                                                @foreach (App\Constants\Common::STATUS_ORDER as $key => $value)
+                                                    @if(($orderList->status ?? 0) == $key)
+                                                        <td>{{ $value }}</td>
+                                                    @endif
+                                                @endforeach
                                                 <td>
+                                                    @if (($orderList->status ?? 0) != App\Constants\Common::CANCEL)
                                                     <form action="{{ route('updateOrder', $orderList->id) }}" method="post">
                                                         @csrf
                                                         <button class="btn btn-success" type="submit"><i class="bi bi-coin"></i></button>
-                                                        <a href="{{ route('showbyId', $orderList->id) }}" class="btn btn-primary"><i class="ri-eye-line"></i></a>
                                                     </form>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ((($orderList->status ?? 0) != App\Constants\Common::CANCEL) && (($orderList->status ?? 0) != App\Constants\Common::PAID))
+                                                    <form action="{{ route('cancel-order', $orderList->id) }}" method="post">
+                                                        @csrf
+                                                        <button class="btn btn-danger" type="submit"><i class="bi bi-coin"></i></button>
+                                                    </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach

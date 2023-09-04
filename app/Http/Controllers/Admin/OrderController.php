@@ -70,6 +70,19 @@ class OrderController extends Controller
 
         return redirect()->route('indexOrder');
     }
+
+    public function cancel($id)
+    {
+        $order = $this->orderServiceInterface->cancel($id);
+
+        if ($order) {
+            session()->flash('message-update-order-success', 'Cancel order successful.');
+        } else {
+            session()->flash('message-update-order', 'Cancel order fail.');
+        }
+
+        return redirect()->route('indexOrder');
+    }
     
     public function select_delivery(Request $request)
     {

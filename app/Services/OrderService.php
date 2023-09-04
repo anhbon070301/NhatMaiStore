@@ -150,6 +150,17 @@ class OrderService implements OrderServiceInterface
         }
     }
 
+    public function cancel(int $id)
+    {
+        $order = $this->orderItemsRepositoryInterface->find($id);
+
+        if ($order) {
+            $order->update(['status' => Common::CANCEL]);
+        }
+
+        return $order;
+    }
+
     /**
      * @param int $id
      * @return int
