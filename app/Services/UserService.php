@@ -89,9 +89,4 @@ class UserService implements UserServiceInterface
     {
         return $this->userRepository->countUser();
     }
-
-    public function saveUser() 
-    {
-        
-    }
 }

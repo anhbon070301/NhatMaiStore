@@ -16,10 +16,11 @@
         <div class="row">
             <div class="col-sm-5">
                 <div class="basic-login">
-                    <form role="form" method="POST" action="{{ route('register') }}">
+                    <form role="form" method="POST" action="{{ route('save-user') }}">
+                        @csrf
                         <div class="form-group">
                             <label for="register-username"><i class="icon-user"></i> <b>Email</b></label>
-                            <input class="form-control" id="register-username" name="email" type="text" placeholder="">
+                            <input class="form-control" id="register-username" name="email" value="{{ old('email') }}" type="text" placeholder="">
                             @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -37,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <label for="register-password2"><i class="icon-lock"></i> <b>Re-enter Password</b></label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn pull-right">Register</button>

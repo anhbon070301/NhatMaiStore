@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Services\Contracts\UserTempServiceInterface;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -32,29 +32,19 @@ class RegisterController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    protected $userTempServiceInterface;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        UserTempServiceInterface $userTempServiceInterface
+    )
     {
         $this->middleware('guest');
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        $this->userTempServiceInterface = $userTempServiceInterface;
     }
 
     /**
@@ -65,10 +55,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        dd()
         return User::create([
-            'username' => $data['name'],
-            // 'phone' => $data['phone'],
-            'phone' => "0398270561",
+            'username' => $data['name'] ?? null,
+            'phone' => $data['phone'] ?? null,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
