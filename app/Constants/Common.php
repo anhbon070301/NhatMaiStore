@@ -58,4 +58,9 @@ class Common
         self::PAID      => 'Paid',
         self::CANCEL    => 'Cancel',
     ];
+
+    const HIDDEN_SEARCH = [
+        'login',
+        'register'
+    ];
 }
