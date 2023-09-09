@@ -18,9 +18,9 @@ trait ViewResponse
         $redirect = redirect()->route($route);
 
         if ($data){
-            session()->flash('message', 'Success '.$action.'! '.$message);
+            session()->flash('message', $action.' successful ! '.$message);
         } else {
-            session()->flash('message-error', 'Fail '.$action.' '.$message);
+            session()->flash('message-error', 'Fail '.$action);
         }
 
         return $redirect;
