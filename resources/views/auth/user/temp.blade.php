@@ -18,10 +18,7 @@
                 <div class="basic-login">
                     <form role="form" method="POST" action="{{ route('register') }}">
                         @csrf
-                        <input class="form-control" name="username" value="{{ $userTemp->username ?? null }}" type="hidden" placeholder="">
-                        <input class="form-control" name="phone" value="{{ $userTemp->phone ?? null }}" type="hidden" placeholder="">
                         <input class="form-control" name="email" value="{{ $userTemp->email ?? null }}" type="hidden" placeholder="">
-                        <input class="form-control" name="password" value="{{ $userTemp->password ?? null }}" type="hidden" placeholder="">
 
                         <div class="form-group">
                             <label for="register-username"><i class="icon-user"></i> <b>Code</b></label>

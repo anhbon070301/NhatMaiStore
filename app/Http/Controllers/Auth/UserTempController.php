@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Constants\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserTemp\CreateUserRequest;
 use App\Services\Contracts\UserTempServiceInterface;
@@ -19,11 +20,7 @@ class UserTempController extends Controller
     {
         $userTemp = $this->userTempServiceInterface->create($request->all());
 
-        if (!$userTemp) {
-            return view('error');
-        }
-
-        return redirect()->route('register');
+        return $this->handleViewResponse($userTemp, 'register', Common::ACTION[Common::ACTION_CREATE], 'Please confirm registration');
     }
 
     public function show($id)

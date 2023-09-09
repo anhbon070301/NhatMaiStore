@@ -63,4 +63,14 @@ class Common
         'login',
         'register'
     ];
+
+    const ACTION_CREATE = 'create';
+    const ACTION_UPDATE = 'update';
+    const ACTION_DELETE = 'delete';
+
+    const ACTION = [
+        self::ACTION_CREATE => 'create',
+        self::ACTION_UPDATE => 'update',
+        self::ACTION_DELETE => 'delete',
+    ];
 }

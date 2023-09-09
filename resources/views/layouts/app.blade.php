@@ -70,7 +70,7 @@
 				</ul>
 				@if(!in_array(Route::currentRouteName(), App\Constants\Common::HIDDEN_SEARCH))
 				<div class="row" style="display: flex; justify-content: center; padding: 10px;">
-					<form method="get" action="{{route('web.product')}}">
+					<form method="get" action="{{ route('web.product') }}">
 						<div class="input-group">
 							<input class="form-control input-md" id="appendedInputButtons" name="name" type="text">
 							<span class="input-group-btn">
