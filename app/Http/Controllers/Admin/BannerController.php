@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Banner\CreateBannerRequest;
 use App\Http\Requests\Banner\UpdateBannerRequest;
 use App\Services\Contracts\BannerServiceInterface;
-use App\Services\Contracts\BrandServiceInterface;
-use App\Services\Contracts\CategoryServiceInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -17,22 +15,15 @@ use Illuminate\Http\Request;
 
 class BannerController extends Controller
 {
-    protected BrandServiceInterface $brandServiceInterface;
-    protected CategoryServiceInterface $categoryServiceInterface;
     protected BannerServiceInterface $bannerServiceInterface;
+    private string $action = 'banner';
 
     /**
-     * @param BrandServiceInterface $brandServiceInterface
-     * @param CategoryServiceInterface $categoryServiceInterface
      * @param BannerServiceInterface $bannerServiceInterface
      */
     public function __construct(
-        BrandServiceInterface    $brandServiceInterface,
-        CategoryServiceInterface $categoryServiceInterface,
         BannerServiceInterface   $bannerServiceInterface,
     ) {
-        $this->brandServiceInterface    = $brandServiceInterface;
-        $this->categoryServiceInterface = $categoryServiceInterface;
         $this->bannerServiceInterface   = $bannerServiceInterface;
     }
 
@@ -68,7 +59,11 @@ class BannerController extends Controller
         //create brand
         $banner = $this->bannerServiceInterface->create($request->all());
 
-        return $this->handleViewResponse($banner, 'indexBanners', Common::ACTION[Common::ACTION_CREATE]. ' banner');
+        return $this->handleViewResponse(
+            $banner,
+            'indexBanners',
+            Common::ACTION[Common::ACTION_CREATE]. ' '.$this->action
+        );
     }
 
     /**
@@ -96,7 +91,11 @@ class BannerController extends Controller
         //find banner
         $banner = $this->bannerServiceInterface->update($request->all(), $id);
 
-        return $this->handleViewResponse($banner, 'indexBanners', Common::ACTION[Common::ACTION_UPDATE]. ' banner');
+        return $this->handleViewResponse(
+            $banner,
+            'indexBanners',
+            Common::ACTION[Common::ACTION_UPDATE]. ' '.$this->action
+        );
     }
 
     /**
@@ -109,10 +108,18 @@ class BannerController extends Controller
         // find banner
         $banner = $this->bannerServiceInterface->delete($id);
 
-        return $this->handleViewResponse($banner, 'indexBanners', Common::ACTION[Common::ACTION_DELETE]. ' banner');
+        return $this->handleViewResponse(
+            $banner,
+            'indexBanners',
+            Common::ACTION[Common::ACTION_DELETE]. ' ' .$this->action
+        );
     }
 
-    public function active(Request $request)
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function active(Request $request): mixed
     {
         return $this->bannerServiceInterface->updateActive($request->all());
     }
