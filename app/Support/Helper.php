@@ -42,3 +42,10 @@ if (!function_exists('decodeJson')) {
         return json_decode($attribute);
     }
 }
+
+if (!function_exists('test')) {
+    function decodeJson(mixed $attribute)
+    {
+        return json_decode($attribute);
+    }
+}
